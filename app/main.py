@@ -139,7 +139,7 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
 
 
 app = FastAPI(
-    title="Practo Domain Support Agent",
+    title="Practo Healthcare Support Agent",
     description=(
         "Final Capstone - Practo (Healthcare) track. RAG core, CrewAI crew, Autogen "
         "review stage and governance, all running under MOCK_LLM with zero API keys."
