@@ -24,12 +24,8 @@ from rag.indexer import VectorIndexError, get_chroma_client, get_collection
 LOGGER: Final = logging.getLogger(__name__)
 
 
-
-
 class RetrievalError(RuntimeError):
     """Raised when a retrieval query cannot be served."""
-
-
 
 
 @dataclass(frozen=True, slots=True)
@@ -58,8 +54,6 @@ class RetrievedChunk:
             "similarity": round(self.similarity, 4),
             "text": self.text,
         }
-
-
 
 
 @dataclass(frozen=True, slots=True)
@@ -97,8 +91,6 @@ class RetrievalResult:
     def context_text(self) -> str:
         """The retrieved chunks joined into the only context generation may use."""
         return "\n".join(chunk.text for chunk in self.chunks)
-
-
 
 
 class Retriever:
@@ -272,6 +264,5 @@ class Retriever:
         # ordering contract explicit and independent of that implementation detail.
         chunks.sort(key=lambda chunk: chunk.distance)
         return chunks
-
 
 

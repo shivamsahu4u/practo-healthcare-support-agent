@@ -24,8 +24,6 @@ from typing import Any, Sequence
 from rag.embeddings import DeterministicHashEmbedder, cosine_similarity
 
 
-
-
 class FakeEmbedder(DeterministicHashEmbedder):
     """Deterministic hashing embedder with a call counter for assertions."""
 
@@ -39,8 +37,6 @@ class FakeEmbedder(DeterministicHashEmbedder):
     def encode(self, texts: Sequence[str]) -> list[list[float]]:
         self.encode_calls += 1
         return super().encode(texts)
-
-
 
 
 class FakeCollection:
@@ -107,8 +103,6 @@ class FakeCollection:
         }
 
 
-
-
 class FakeChromaClient:
     """In-memory stand-in for ``chromadb.PersistentClient``."""
 
@@ -139,6 +133,5 @@ class FakeChromaClient:
         if name not in self.collections:
             raise KeyError(name)
         del self.collections[name]
-
 
 

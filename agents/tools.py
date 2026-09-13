@@ -121,12 +121,8 @@ assert math.isclose(WEIGHT_FOLLOW_UP + WEIGHT_AGING, 1.0), (
 )
 
 
-
-
 def _clamp(value: float, low: float = 0.0, high: float = 1.0) -> float:
     return max(low, min(high, value))
-
-
 
 
 def escalation_components(record: dict[str, Any]) -> dict[str, Any]:
@@ -146,15 +142,11 @@ def escalation_components(record: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-
-
 def escalation_score(record: dict[str, Any]) -> float:
     """The designed escalation score in ``[0, 1]``, rounded to 4 decimals."""
     components = escalation_components(record)
     raw = components["follow_up_component"] + components["aging_component"]
     return round(_clamp(raw), 4)
-
-
 
 
 def _nearest_rank_percentile(values: list[float], percentile: float) -> float:
@@ -174,8 +166,6 @@ def _nearest_rank_percentile(values: list[float], percentile: float) -> float:
     return ordered[rank - 1]
 
 
-
-
 @lru_cache(maxsize=4)
 def escalation_threshold(percentile: float = ESCALATION_PERCENTILE) -> float:
     """The escalation threshold, derived from the dataset's own distribution.
@@ -186,8 +176,6 @@ def escalation_threshold(percentile: float = ESCALATION_PERCENTILE) -> float:
     """
     scores = [escalation_score(record) for record in APPOINTMENTS]
     return round(_nearest_rank_percentile(scores, percentile), 4)
-
-
 
 
 def escalation_distribution(percentile: float = ESCALATION_PERCENTILE) -> dict[str, Any]:
@@ -228,13 +216,9 @@ def escalation_distribution(percentile: float = ESCALATION_PERCENTILE) -> dict[s
     }
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Task 6 - the lookup tool itself
 # --------------------------------------------------------------------------- #
-
-
 
 
 def format_readme_section(percentile: float = ESCALATION_PERCENTILE) -> str:
@@ -283,8 +267,6 @@ def format_readme_section(percentile: float = ESCALATION_PERCENTILE) -> str:
         "no-follow-up score.",
     ]
     return "\n".join(lines)
-
-
 
 
 def check_appointment_status(record_id: str) -> dict[str, Any]:
@@ -347,13 +329,9 @@ def check_appointment_status(record_id: str) -> dict[str, Any]:
     }
 
 
-
-
 # --------------------------------------------------------------------------- #
 # The RAG tool
 # --------------------------------------------------------------------------- #
-
-
 
 
 def policy_knowledge_lookup(
@@ -374,13 +352,9 @@ def policy_knowledge_lookup(
     return generator.generate(query, collection_name=collection_name, top_k=top_k)
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Argument schemas - the dispatch key for the mock LLM
 # --------------------------------------------------------------------------- #
-
-
 
 
 class PolicyLookupArgs(BaseModel):
@@ -390,15 +364,11 @@ class PolicyLookupArgs(BaseModel):
     query: str = Field(description="The patient's policy question, in full.")
 
 
-
-
 class AppointmentLookupArgs(BaseModel):
     """Arguments for the appointment status tool."""
 
 
     record_id: str = Field(description="An appointment record id such as APT-1007.")
-
-
 
 
 #: Argument-name -> tool-name routing table.
@@ -415,12 +385,8 @@ ARG_SCHEMA_ROUTING: Final[dict[frozenset[str], str]] = {
 }
 
 
-
-
 class ToolDispatchError(RuntimeError):
     """Raised when a tool's argument schema matches no known tool kind."""
-
-
 
 
 def classify_tool(tool: Any) -> str:
@@ -448,8 +414,6 @@ def classify_tool(tool: Any) -> str:
     return ARG_SCHEMA_ROUTING[key]
 
 
-
-
 # --------------------------------------------------------------------------- #
 # CrewAI tool wrappers
 # --------------------------------------------------------------------------- #
@@ -471,8 +435,6 @@ APPOINTMENT_TOOL_DESCRIPTION: Final[str] = (
 )
 
 
-
-
 def _summarise_lookup(payload: dict[str, Any]) -> str:
     if not payload.get("found"):
         return f"{payload.get('record_id')}: not found"
@@ -484,8 +446,6 @@ def _summarise_lookup(payload: dict[str, Any]) -> str:
     )
 
 
-
-
 def _summarise_policy(answer: GroundedAnswer) -> str:
     return (
         f"grounded={answer.grounded}, "
@@ -494,8 +454,6 @@ def _summarise_policy(answer: GroundedAnswer) -> str:
         f"sources={list(answer.sources)}, "
         f"cache_hit={answer.cache_hit}"
     )
-
-
 
 
 def invoke_policy_lookup(
@@ -537,8 +495,6 @@ def invoke_policy_lookup(
     return answer
 
 
-
-
 def invoke_appointment_lookup(
     context: CrewRunContext, record_id: str | None = None
 ) -> dict[str, Any]:
@@ -554,8 +510,6 @@ def invoke_appointment_lookup(
         summary=_summarise_lookup(payload),
     )
     return payload
-
-
 
 
 @dataclass(slots=True)
@@ -575,8 +529,6 @@ class CrewTools:
             return [self.appointment_tool]
         # The Composer holds no tools at all - least autonomy.
         return []
-
-
 
 
 def build_crew_tools(
@@ -658,6 +610,5 @@ def build_crew_tools(
     policy_tool = PolicyKnowledgeLookupTool(run_context=context, generator_ref=generator)
     appointment_tool = AppointmentStatusLookupTool(run_context=context)
     return CrewTools(policy_tool=policy_tool, appointment_tool=appointment_tool)
-
 
 

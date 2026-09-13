@@ -42,12 +42,8 @@ from app.config import (
 LOGGER: Final = logging.getLogger(__name__)
 
 
-
-
 class EmbeddingModelUnavailableError(RuntimeError):
     """Raised when the configured embedding backend cannot be loaded."""
-
-
 
 
 @runtime_checkable
@@ -64,13 +60,9 @@ class Embedder(Protocol):
         ...
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Helpers
 # --------------------------------------------------------------------------- #
-
-
 
 
 def l2_normalise(vector: Sequence[float]) -> list[float]:
@@ -86,8 +78,6 @@ def l2_normalise(vector: Sequence[float]) -> list[float]:
     return [component / magnitude for component in vector]
 
 
-
-
 def cosine_similarity(left: Sequence[float], right: Sequence[float]) -> float:
     """Cosine similarity, clamped to [-1, 1] to absorb float drift."""
     if len(left) != len(right):
@@ -99,8 +89,6 @@ def cosine_similarity(left: Sequence[float], right: Sequence[float]) -> float:
     return max(-1.0, min(1.0, dot / norm))
 
 
-
-
 def _validate_texts(texts: Sequence[str]) -> list[str]:
     if isinstance(texts, str):
         raise TypeError("encode() takes a sequence of strings, not a single string.")
@@ -110,13 +98,9 @@ def _validate_texts(texts: Sequence[str]) -> list[str]:
     return listed
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Backend: SentenceTransformers (default, graded path)
 # --------------------------------------------------------------------------- #
-
-
 
 
 class SentenceTransformerEmbedder:
@@ -198,13 +182,9 @@ class SentenceTransformerEmbedder:
         return [l2_normalise([float(value) for value in row]) for row in vectors]
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Backend: ChromaDB bundled ONNX MiniLM (opt-in, torch-free)
 # --------------------------------------------------------------------------- #
-
-
 
 
 class ChromaOnnxEmbedder:
@@ -254,13 +234,9 @@ class ChromaOnnxEmbedder:
         return [l2_normalise([float(value) for value in row]) for row in vectors]
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Backend: deterministic hashing (test-suite only, opt-in)
 # --------------------------------------------------------------------------- #
-
-
 
 
 class DeterministicHashEmbedder:
@@ -309,13 +285,9 @@ class DeterministicHashEmbedder:
         return vectors
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Factory
 # --------------------------------------------------------------------------- #
-
-
 
 
 def build_embedder(settings: Settings = SETTINGS) -> Embedder:
@@ -345,6 +317,5 @@ def build_embedder(settings: Settings = SETTINGS) -> Embedder:
         )
         return DeterministicHashEmbedder()
     raise EmbeddingModelUnavailableError(f"unknown EMBEDDING_BACKEND {backend!r}.")
-
 
 

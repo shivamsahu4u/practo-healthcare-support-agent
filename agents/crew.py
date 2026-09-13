@@ -55,19 +55,13 @@ from rag.grounded_generation import GroundedGenerator
 LOGGER: Final = logging.getLogger(__name__)
 
 
-
-
 class CrewExecutionError(RuntimeError):
     """Raised when the crew cannot be constructed or run."""
-
-
 
 
 # --------------------------------------------------------------------------- #
 # Agent definitions
 # --------------------------------------------------------------------------- #
-
-
 
 
 @dataclass(frozen=True, slots=True)
@@ -79,8 +73,6 @@ class AgentSpec:
     role: str
     goal: str
     backstory: str
-
-
 
 
 AGENT_SPECS: Final[dict[str, AgentSpec]] = {
@@ -130,13 +122,9 @@ AGENT_SPECS: Final[dict[str, AgentSpec]] = {
 }
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Result
 # --------------------------------------------------------------------------- #
-
-
 
 
 @dataclass(slots=True)
@@ -168,13 +156,9 @@ class CrewDraft:
         }
 
 
-
-
 # --------------------------------------------------------------------------- #
 # CrewAI path
 # --------------------------------------------------------------------------- #
-
-
 
 
 def _authorised_tool_map(tools: CrewTools, agent_keys: list[str]) -> dict[str, list[Any]]:
@@ -192,8 +176,6 @@ def _authorised_tool_map(tools: CrewTools, agent_keys: list[str]) -> dict[str, l
     return assignments
 
 
-
-
 def _agent_keys_for_route(context: CrewRunContext) -> list[str]:
     """Which agents this turn needs. The Composer always runs."""
     keys: list[str] = []
@@ -203,8 +185,6 @@ def _agent_keys_for_route(context: CrewRunContext) -> list[str]:
         keys.append(AGENT_LOOKUP)
     keys.append(AGENT_COMPOSER)
     return keys
-
-
 
 
 def _run_with_crewai(
@@ -353,13 +333,9 @@ def _run_with_crewai(
     )
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Direct path (diagnostic)
 # --------------------------------------------------------------------------- #
-
-
 
 
 def _run_direct(
@@ -391,13 +367,9 @@ def _run_direct(
     )
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Entry point
 # --------------------------------------------------------------------------- #
-
-
 
 
 def run_crew(
@@ -416,6 +388,5 @@ def run_crew(
         )
         return _run_direct(context, generator, settings)
     raise CrewExecutionError(f"unsupported CREW_MODE {settings.crew_mode!r}.")
-
 
 

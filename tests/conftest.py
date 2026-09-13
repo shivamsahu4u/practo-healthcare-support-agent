@@ -38,14 +38,10 @@ from rag.retriever import Retriever
 from tests.fakes import FakeChromaClient, FakeEmbedder
 
 
-
-
 @pytest.fixture(scope="session")
 def documents() -> list[KbDocument]:
     """The real knowledge base, parsed from disk."""
     return load_knowledge_base()
-
-
 
 
 @pytest.fixture()
@@ -66,8 +62,6 @@ def test_settings() -> Settings:
     )
 
 
-
-
 @pytest.fixture()
 def kb_version(monkeypatch: pytest.MonkeyPatch) -> Iterator[dict[str, int]]:
     """Redirect the knowledge-base version counter to an in-test value."""
@@ -76,8 +70,6 @@ def kb_version(monkeypatch: pytest.MonkeyPatch) -> Iterator[dict[str, int]]:
         "rag.grounded_generation.current_kb_version", lambda *_a, **_k: holder["value"]
     )
     yield holder
-
-
 
 
 @pytest.fixture()
@@ -115,20 +107,14 @@ def index_state_file(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> Path:
     return target
 
 
-
-
 @pytest.fixture()
 def embedder() -> FakeEmbedder:
     return FakeEmbedder()
 
 
-
-
 @pytest.fixture()
 def chroma_client() -> FakeChromaClient:
     return FakeChromaClient()
-
-
 
 
 @pytest.fixture()
@@ -150,15 +136,11 @@ def built_index(
     return chroma_client
 
 
-
-
 @pytest.fixture()
 def retriever(
     test_settings: Settings, built_index: FakeChromaClient, embedder: FakeEmbedder
 ) -> Retriever:
     return Retriever(test_settings, client=built_index, embedder=embedder)
-
-
 
 
 @pytest.fixture()
@@ -185,8 +167,6 @@ def measured_threshold(test_settings: Settings, retriever: Retriever) -> Thresho
     )
 
 
-
-
 @pytest.fixture()
 def generator(
     test_settings: Settings,
@@ -201,13 +181,10 @@ def generator(
     )
 
 
-
-
 @pytest.fixture()
 def service(test_settings: Settings, generator: GroundedGenerator) -> SupportService:
     return SupportService(
         test_settings, generator=generator, sessions=SessionStore()
     )
-
 
 

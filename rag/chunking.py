@@ -46,19 +46,13 @@ _WHITESPACE: Final[re.Pattern[str]] = re.compile(r"\s+")
 _HEADING: Final[re.Pattern[str]] = re.compile(r"^#\s+(?P<title>.+?)\s*$", re.MULTILINE)
 
 
-
-
 class KnowledgeBaseError(RuntimeError):
     """Raised when the knowledge base on disk is missing or malformed."""
-
-
 
 
 # --------------------------------------------------------------------------- #
 # Documents
 # --------------------------------------------------------------------------- #
-
-
 
 
 @dataclass(frozen=True, slots=True)
@@ -83,13 +77,9 @@ class KbDocument:
         return self.document_id in KB_TOPIC_BY_SLUG
 
 
-
-
 def normalise_whitespace(text: str) -> str:
     """Collapse all whitespace runs to single spaces and strip the ends."""
     return _WHITESPACE.sub(" ", text).strip()
-
-
 
 
 def parse_document(path: Path) -> KbDocument:
@@ -122,8 +112,6 @@ def parse_document(path: Path) -> KbDocument:
     )
 
 
-
-
 def load_knowledge_base(directory: Path | None = None) -> list[KbDocument]:
     """Load every ``*.md`` document, sorted by ``document_id`` for determinism.
 
@@ -151,13 +139,9 @@ def load_knowledge_base(directory: Path | None = None) -> list[KbDocument]:
     return documents
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Chunks
 # --------------------------------------------------------------------------- #
-
-
 
 
 @dataclass(frozen=True, slots=True)
@@ -185,13 +169,9 @@ class Chunk:
         }
 
 
-
-
 def split_sentences(text: str) -> list[str]:
     """Split normalised text into non-empty sentences."""
     return [part.strip() for part in _SENTENCE_BOUNDARY.split(normalise_whitespace(text)) if part.strip()]
-
-
 
 
 def chunk_fixed_size(text: str, size: int, overlap: int) -> list[str]:
@@ -251,8 +231,6 @@ def chunk_fixed_size(text: str, size: int, overlap: int) -> list[str]:
     return windows
 
 
-
-
 def chunk_sentences(text: str, sentences_per_chunk: int) -> list[str]:
     """Group whole sentences into chunks of ``sentences_per_chunk``, no overlap."""
     if sentences_per_chunk <= 0:
@@ -262,8 +240,6 @@ def chunk_sentences(text: str, sentences_per_chunk: int) -> list[str]:
         " ".join(sentences[index : index + sentences_per_chunk])
         for index in range(0, len(sentences), sentences_per_chunk)
     ]
-
-
 
 
 def chunk_document(
@@ -299,8 +275,6 @@ def chunk_document(
     ]
 
 
-
-
 def chunk_corpus(
     documents: list[KbDocument], strategy: str, settings: Settings = SETTINGS
 ) -> list[Chunk]:
@@ -311,8 +285,6 @@ def chunk_corpus(
     if not chunks:
         raise KnowledgeBaseError(f"strategy {strategy!r} produced no chunks.")
     return chunks
-
-
 
 
 def chunk_corpus_all_strategies(

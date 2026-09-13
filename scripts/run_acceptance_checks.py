@@ -71,8 +71,6 @@ FAIL = "FAIL"
 SKIP = "SKIP"
 
 
-
-
 @dataclass(slots=True)
 class Check:
     """One acceptance criterion and its outcome."""
@@ -91,8 +89,6 @@ class Check:
             "status": self.status,
             "detail": self.detail,
         }
-
-
 
 
 @dataclass(slots=True)
@@ -138,13 +134,9 @@ class Runner:
         return [check for check in self.checks if check.status == SKIP]
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Part 1
 # --------------------------------------------------------------------------- #
-
-
 
 
 def check_part1(runner: Runner) -> None:
@@ -267,13 +259,9 @@ def check_part1(runner: Runner) -> None:
     )
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Part 2
 # --------------------------------------------------------------------------- #
-
-
 
 
 def check_part2(runner: Runner, service: SupportService) -> None:
@@ -421,13 +409,9 @@ def check_part2(runner: Runner, service: SupportService) -> None:
     runner.run("Task 10", "all three guardrails fire on deliberate cases", guardrails)
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Part 3
 # --------------------------------------------------------------------------- #
-
-
 
 
 def check_part3(runner: Runner, service: SupportService) -> None:
@@ -487,13 +471,9 @@ def check_part3(runner: Runner, service: SupportService) -> None:
     runner.run("Task 13", "all four scores for all 15 queries plus averages", evaluation_check)
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Part 4
 # --------------------------------------------------------------------------- #
-
-
 
 
 def check_part4(runner: Runner, service: SupportService) -> None:
@@ -616,13 +596,9 @@ def check_part4(runner: Runner, service: SupportService) -> None:
     runner.run("Task 16", "repeated query produces a real cache hit", cache)
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Report
 # --------------------------------------------------------------------------- #
-
-
 
 
 def format_report(runner: Runner) -> str:
@@ -655,8 +631,6 @@ def format_report(runner: Runner) -> str:
         "",
     ]
     return "\n".join(lines)
-
-
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -706,10 +680,7 @@ def main(argv: list[str] | None = None) -> int:
     return 1 if runner.failed else 0
 
 
-
-
 if __name__ == "__main__":
     sys.exit(main())
-
 
 

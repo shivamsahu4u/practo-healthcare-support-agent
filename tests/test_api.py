@@ -22,8 +22,6 @@ from dataset import APPOINTMENTS
 from rag.indexer import AddDocumentResult, DocumentRejectedError, validate_document_submission
 
 
-
-
 @pytest.fixture()
 def client(service: SupportService, test_settings: Settings) -> Iterator[TestClient]:
     """A TestClient wired to the offline service."""
@@ -32,8 +30,6 @@ def client(service: SupportService, test_settings: Settings) -> Iterator[TestCli
     with TestClient(app) as test_client:
         yield test_client
     app.dependency_overrides.clear()
-
-
 
 
 def log_lines(path: Path) -> list[str]:
@@ -45,13 +41,9 @@ def log_lines(path: Path) -> list[str]:
     ]
 
 
-
-
 def log_line_count(path: Path) -> int:
     """Line count, captured before an action so only new entries are inspected."""
     return len(log_lines(path))
-
-
 
 
 def read_new_log_lines(path: Path, previous_count: int) -> list[dict]:
@@ -65,8 +57,6 @@ def read_new_log_lines(path: Path, previous_count: int) -> list[dict]:
     return [json.loads(line) for line in log_lines(path)[previous_count:]]
 
 
-
-
 class TestRoutes:
     def test_every_required_route_is_registered(self) -> None:
         paths = {route["path"] for route in describe_routes()}
@@ -78,8 +68,6 @@ class TestRoutes:
         assert any(
             route["type"] == "APIWebSocketRoute" for route in describe_routes()
         )
-
-
 
 
 class TestHealth:
@@ -116,8 +104,6 @@ class TestHealth:
             assert forbidden not in body
 
 
-
-
 class TestGovernanceEndpoint:
     def test_reports_high_risk_and_the_registry(self, client: TestClient) -> None:
         payload = client.get("/governance").json()
@@ -132,8 +118,6 @@ class TestGovernanceEndpoint:
         permissions = payload["tool_permissions"]
         assert permissions["lookup_agent"] == ["appointment_status_lookup"]
         assert permissions["response_composer"] == []
-
-
 
 
 class TestAsk:
@@ -239,8 +223,6 @@ class TestAsk:
         SupportResponse.model_validate(payload)
 
 
-
-
 class TestAddDocument:
     def test_indexes_a_new_document(
         self, client: TestClient, monkeypatch: pytest.MonkeyPatch
@@ -344,8 +326,6 @@ class TestAddDocument:
         assert len(service.generator.cache) == 0
 
 
-
-
 class TestDocumentValidation:
     def test_accepts_a_well_formed_submission(self) -> None:
         slug, title, body = validate_document_submission(
@@ -385,8 +365,6 @@ class TestDocumentValidation:
     def test_rejects_an_empty_title(self) -> None:
         with pytest.raises(DocumentRejectedError):
             validate_document_submission("brand_new_topic", "   ", "One. Two.")
-
-
 
 
 class TestWebSocket:
@@ -478,8 +456,6 @@ class TestWebSocket:
             assert error["error"] == "budget_exceeded"
 
 
-
-
 class TestStructuredLogging:
     def test_one_json_line_per_request_with_a_trace_id(
         self, client: TestClient, test_settings: Settings
@@ -560,8 +536,5 @@ class TestStructuredLogging:
         assert entries
         assert entries[0]["transport"] == "websocket"
         assert entries[0]["endpoint"] == "WS /ws/chat"
-
-
-
 
 

@@ -58,25 +58,17 @@ MIN_DOCUMENT_SENTENCES: Final[int] = 2
 MAX_DOCUMENT_CHARACTERS: Final[int] = 4000
 
 
-
-
 class VectorIndexError(RuntimeError):
     """Raised when the vector index cannot be built or read."""
-
-
 
 
 class DocumentRejectedError(ValueError):
     """Raised when a submitted knowledge-base document fails validation."""
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Client
 # --------------------------------------------------------------------------- #
-
-
 
 
 def get_chroma_client(settings: Settings = SETTINGS) -> Any:
@@ -109,8 +101,6 @@ def get_chroma_client(settings: Settings = SETTINGS) -> Any:
         ) from exc
 
 
-
-
 def get_collection(client: Any, name: str) -> Any:
     """Get or create a cosine-space collection with no embedding function.
 
@@ -125,13 +115,9 @@ def get_collection(client: Any, name: str) -> Any:
     )
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Index state / knowledge-base version
 # --------------------------------------------------------------------------- #
-
-
 
 
 @dataclass(slots=True)
@@ -158,8 +144,6 @@ class IndexState:
         }
 
 
-
-
 def read_index_state(path: Path = INDEX_STATE_FILE) -> IndexState:
     """Read the index state file, returning a zeroed state when absent."""
     if not path.is_file():
@@ -181,14 +165,10 @@ def read_index_state(path: Path = INDEX_STATE_FILE) -> IndexState:
     )
 
 
-
-
 def write_index_state(state: IndexState, path: Path = INDEX_STATE_FILE) -> None:
     """Persist the index state file."""
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(state.as_dict(), indent=2) + "\n", encoding="utf-8")
-
-
 
 
 def current_kb_version(path: Path = INDEX_STATE_FILE) -> int:
@@ -196,13 +176,9 @@ def current_kb_version(path: Path = INDEX_STATE_FILE) -> int:
     return read_index_state(path).kb_version
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Indexing
 # --------------------------------------------------------------------------- #
-
-
 
 
 def upsert_chunks(collection: Any, chunks: list[Chunk], embedder: Embedder) -> int:
@@ -221,8 +197,6 @@ def upsert_chunks(collection: Any, chunks: list[Chunk], embedder: Embedder) -> i
         embeddings=embeddings,
     )
     return len(chunks)
-
-
 
 
 @dataclass(slots=True)
@@ -252,8 +226,6 @@ class BuildResult:
             for name, count in self.collection_counts.items()
         )
         return lines
-
-
 
 
 def build_indexes(
@@ -326,13 +298,9 @@ def build_indexes(
     )
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Runtime document addition (POST /add-document)
 # --------------------------------------------------------------------------- #
-
-
 
 
 @dataclass(slots=True)
@@ -350,8 +318,6 @@ class AddDocumentResult:
     @property
     def total_chunks(self) -> int:
         return sum(len(ids) for ids in self.chunk_ids.values())
-
-
 
 
 def validate_document_submission(topic_slug: str, title: str, content: str) -> tuple[str, str, str]:
@@ -401,8 +367,6 @@ def validate_document_submission(topic_slug: str, title: str, content: str) -> t
             "through the API."
         )
     return slug, clean_title, body
-
-
 
 
 def add_document(
@@ -475,6 +439,5 @@ def add_document(
         chunk_ids=chunk_ids,
         kb_version=state.kb_version,
     )
-
 
 

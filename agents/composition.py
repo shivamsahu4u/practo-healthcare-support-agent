@@ -123,13 +123,9 @@ COMPOSER_FRAMING_PHRASES: Final[tuple[str, ...]] = (
 )
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Sections
 # --------------------------------------------------------------------------- #
-
-
 
 
 def compose_policy_section(context: CrewRunContext) -> str:
@@ -138,8 +134,6 @@ def compose_policy_section(context: CrewRunContext) -> str:
     if grounded is None:
         return ""
     return grounded.answer
-
-
 
 
 def render_lookup_facts(lookup: dict[str, Any]) -> str:
@@ -165,8 +159,6 @@ def render_lookup_facts(lookup: dict[str, Any]) -> str:
         f"escalation recommended {lookup['escalation_recommended']}",
     ]
     return ". ".join(parts) + "."
-
-
 
 
 def compose_appointment_section(context: CrewRunContext) -> str:
@@ -207,13 +199,9 @@ def compose_appointment_section(context: CrewRunContext) -> str:
     return " ".join(sentences)
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Draft
 # --------------------------------------------------------------------------- #
-
-
 
 
 def compose_draft(context: CrewRunContext) -> str:
@@ -245,8 +233,6 @@ def compose_draft(context: CrewRunContext) -> str:
     return draft
 
 
-
-
 def determine_response_type(context: CrewRunContext) -> ResponseType:
     """Classify the turn against the closed ``ResponseType`` vocabulary."""
     has_policy = context.grounded is not None and context.grounded.grounded
@@ -260,8 +246,6 @@ def determine_response_type(context: CrewRunContext) -> ResponseType:
     if has_policy:
         return "policy"
     return "fallback"
-
-
 
 
 def build_support_text(context: CrewRunContext) -> str:
@@ -307,8 +291,6 @@ def build_support_text(context: CrewRunContext) -> str:
     return "\n".join(part for part in parts if part)
 
 
-
-
 def compose_sources(context: CrewRunContext) -> list[str]:
     """Source document ids backing this answer, plus the appointment record."""
     sources = list(context.source_ids)
@@ -318,6 +300,5 @@ def compose_sources(context: CrewRunContext) -> list[str]:
         if marker not in sources:
             sources.append(marker)
     return sources
-
 
 

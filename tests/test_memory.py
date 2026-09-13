@@ -26,8 +26,6 @@ from dataset import APPOINTMENTS
 FOLLOW_UP = "And what is its current status?"
 
 
-
-
 class TestSessionMemory:
     def test_histories_are_isolated_by_session_id(self) -> None:
         memory = SessionMemory()
@@ -78,8 +76,6 @@ class TestSessionMemory:
         assert [entry["content"] for entry in transcript] == ["question", "answer"]
 
 
-
-
 class TestRecordIdRecovery:
     def test_finds_an_id_in_a_human_message(self) -> None:
         history = [HumanMessage(content="Status of APT-1007 please?")]
@@ -118,8 +114,6 @@ class TestRecordIdRecovery:
     )
     def test_extraction_normalises(self, text: str, expected: str | None) -> None:
         assert extract_record_id(text) == expected
-
-
 
 
 class TestRouting:
@@ -161,8 +155,6 @@ class TestRouting:
             )
             == ROUTE_POLICY
         )
-
-
 
 
 class TestEndToEndMemory:
@@ -234,6 +226,5 @@ class TestEndToEndMemory:
         assert service.sessions.reset(session) is True
         after = await service.answer(FOLLOW_UP, session_id=session)
         assert after.appointment is None
-
 
 

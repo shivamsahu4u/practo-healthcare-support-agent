@@ -59,13 +59,9 @@ RECORD_ID = APPOINTMENTS[6]["record_id"]
 POLICY_QUERY = "How long before my appointment can I cancel without paying a fee?"
 
 
-
-
 @pytest.fixture()
 def crewai_settings(test_settings: Settings) -> Settings:
     return dataclasses.replace(test_settings, crew_mode=CREW_MODE_CREWAI)
-
-
 
 
 def make_context(query: str) -> CrewRunContext:
@@ -79,8 +75,6 @@ def make_context(query: str) -> CrewRunContext:
         route=classify_route(query),
         record_id=extract_record_id(query),
     )
-
-
 
 
 class TestReActFormatting:
@@ -105,8 +99,6 @@ class TestReActFormatting:
         text = format_final_answer("the answer")
         assert "Final Answer: the answer" in text
         assert "\nAction:" not in text
-
-
 
 
 class TestObservationTemplateGuard:
@@ -158,8 +150,6 @@ class TestObservationTemplateGuard:
 
     def test_a_bare_string_is_accepted(self) -> None:
         assert normalise_messages("just a prompt")[0]["role"] == "user"
-
-
 
 
 class TestMockCrewLLM:
@@ -261,8 +251,6 @@ class TestMockCrewLLM:
             llm.call([{"role": "user", "content": "q"}])
 
 
-
-
 class TestCrewTools:
     def test_tools_are_classified_by_their_argument_schema(
         self, crewai_settings: Settings, generator: GroundedGenerator
@@ -306,8 +294,6 @@ class TestCrewTools:
         assert payload["found"] is True
         assert context.lookup is not None
         assert context.invocations[0].tool_name == TOOL_APPOINTMENT_LOOKUP
-
-
 
 
 class TestCrewKickoff:
@@ -376,8 +362,6 @@ class TestCrewKickoff:
             run_crew(context, generator, UnknownMode())  # type: ignore[arg-type]
 
 
-
-
 class TestLeastAutonomyInsideTheCrew:
     def test_wiring_the_appointment_tool_to_another_agent_is_blocked(
         self, crewai_settings: Settings, generator: GroundedGenerator
@@ -405,6 +389,5 @@ class TestLeastAutonomyInsideTheCrew:
             _authorised_tool_map(
                 Overreaching(tools.appointment_tool), [AGENT_RETRIEVAL]  # type: ignore[arg-type]
             )
-
 
 

@@ -69,12 +69,8 @@ TOOL_PERMISSIONS: Final[dict[str, frozenset[str]]] = {
 EXCLUSIVE_TOOLS: Final[frozenset[str]] = frozenset({TOOL_APPOINTMENT_LOOKUP})
 
 
-
-
 class ToolPermissionError(PermissionError):
     """Raised when an agent is offered a tool it is not authorised to hold."""
-
-
 
 
 def authorised_tools(agent_key: str) -> frozenset[str]:
@@ -90,8 +86,6 @@ def authorised_tools(agent_key: str) -> frozenset[str]:
             "TOOL_PERMISSIONS with an explicit tool set before wiring it into the crew."
         )
     return TOOL_PERMISSIONS[agent_key]
-
-
 
 
 def assert_tool_assignment(agent_key: str, tool_names: list[str]) -> None:
@@ -114,16 +108,12 @@ def assert_tool_assignment(agent_key: str, tool_names: list[str]) -> None:
         )
 
 
-
-
 def agent_holding(tool_name: str) -> str | None:
     """Which single agent is authorised for ``tool_name``, if exactly one is."""
     holders = [
         agent for agent, tools in TOOL_PERMISSIONS.items() if tool_name in tools
     ]
     return holders[0] if len(holders) == 1 else None
-
-
 
 
 def verify_registry_invariants() -> None:
@@ -144,8 +134,6 @@ def verify_registry_invariants() -> None:
             )
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Runtime layer - per-request budget cap
 # --------------------------------------------------------------------------- #
@@ -157,8 +145,6 @@ def verify_registry_invariants() -> None:
 #: is the usual rule of thumb for English and is stated as an estimate wherever
 #: it is reported.
 CHARACTERS_PER_TOKEN: Final[int] = 4
-
-
 
 
 @dataclass(frozen=True, slots=True)
@@ -187,8 +173,6 @@ class BudgetDecision:
         }
 
 
-
-
 class BudgetExceededError(RuntimeError):
     """Raised when a request exceeds the per-request token/cost budget."""
 
@@ -198,13 +182,9 @@ class BudgetExceededError(RuntimeError):
         super().__init__(decision.message)
 
 
-
-
 def estimate_tokens(text: str) -> int:
     """Deterministic token estimate: ``ceil(len(text) / CHARACTERS_PER_TOKEN)``."""
     return math.ceil(len(text or "") / CHARACTERS_PER_TOKEN)
-
-
 
 
 def evaluate_budget(text: str, settings: Settings = SETTINGS) -> BudgetDecision:
@@ -253,8 +233,6 @@ def evaluate_budget(text: str, settings: Settings = SETTINGS) -> BudgetDecision:
     )
 
 
-
-
 def enforce_budget(text: str, settings: Settings = SETTINGS) -> BudgetDecision:
     """Check ``text`` and raise when it exceeds a cap.
 
@@ -272,8 +250,6 @@ def enforce_budget(text: str, settings: Settings = SETTINGS) -> BudgetDecision:
     return decision
 
 
-
-
 def budget_snapshot(settings: Settings = SETTINGS) -> dict[str, int]:
     """The active caps, for ``GET /governance`` and reports."""
     return {
@@ -281,8 +257,6 @@ def budget_snapshot(settings: Settings = SETTINGS) -> dict[str, int]:
         "max_estimated_tokens": settings.max_estimated_tokens,
         "characters_per_token_estimate": CHARACTERS_PER_TOKEN,
     }
-
-
 
 
 # --------------------------------------------------------------------------- #
@@ -315,8 +289,6 @@ RISK_JUSTIFICATION: Final[str] = (
     "and the emergency policy document routes any suspected emergency to the "
     "national emergency number rather than answering it."
 )
-
-
 
 
 GOVERNANCE_LAYERS: Final[dict[str, dict[str, Any]]] = {
@@ -413,8 +385,6 @@ GOVERNANCE_LAYERS: Final[dict[str, dict[str, Any]]] = {
 }
 
 
-
-
 def governance_snapshot(settings: Settings = SETTINGS) -> dict[str, Any]:
     """Everything ``GET /governance`` reports."""
     return {
@@ -426,6 +396,5 @@ def governance_snapshot(settings: Settings = SETTINGS) -> dict[str, Any]:
         },
         "budget": budget_snapshot(settings),
     }
-
 
 

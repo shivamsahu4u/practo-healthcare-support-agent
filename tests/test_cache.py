@@ -16,8 +16,6 @@ from rag.grounded_generation import GroundedGenerator
 POLICY_QUERY = "What discount applies to a follow-up visit within two weeks?"
 
 
-
-
 class TestNormalisation:
     @pytest.mark.parametrize(
         "raw,expected",
@@ -72,8 +70,6 @@ class TestNormalisation:
         ) != make_cache_key(
             "a", collection_name="bc", top_k=3, threshold=0.5, kb_version=1
         )
-
-
 
 
 class TestResponseCache:
@@ -134,8 +130,6 @@ class TestResponseCache:
     def test_rejects_a_non_positive_size(self) -> None:
         with pytest.raises(ValueError):
             ResponseCache(max_entries=0)
-
-
 
 
 class TestGroundedGenerationCaching:
@@ -248,8 +242,6 @@ class TestGroundedGenerationCaching:
         assert generator.stats.fallbacks == 1
 
 
-
-
 class TestServiceLevelCaching:
     async def test_a_repeated_policy_question_reports_a_cache_hit(
         self, service: SupportService
@@ -272,6 +264,5 @@ class TestServiceLevelCaching:
         )
         assert len(service.generator.cache) == 0
         assert service.generator.stats.generations == 0
-
 
 

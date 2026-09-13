@@ -37,8 +37,6 @@ from evaluation.mock_judge import (
 )
 
 
-
-
 async def _evaluate(
     service: SupportService, cases: list[EvalCase]
 ) -> list[tuple[EvalCase, SupportResponse, JudgeScore]]:
@@ -60,8 +58,6 @@ async def _evaluate(
             ) from exc
         results.append((case, response, judge(case, response)))
     return results
-
-
 
 
 def format_report(
@@ -180,15 +176,11 @@ def format_report(
     return "\n".join(lines)
 
 
-
-
 def write_report(text: str, *, path: Path | None = None) -> Path:
     target = path or (REPORTS_DIR / "evaluation_report.md")
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(text, encoding="utf-8")
     return target
-
-
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -236,12 +228,7 @@ def main(argv: list[str] | None = None) -> int:
     return 0
 
 
-
-
 if __name__ == "__main__":
     sys.exit(main())
-
-
-
 
 

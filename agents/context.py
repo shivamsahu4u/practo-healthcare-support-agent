@@ -34,8 +34,6 @@ ROUTE_APPOINTMENT = "appointment"
 ROUTE_COMBINED = "combined"
 
 
-
-
 @dataclass(frozen=True, slots=True)
 class ToolInvocation:
     """One recorded tool call."""
@@ -56,8 +54,6 @@ class ToolInvocation:
             "ok": self.ok,
             "summary": self.summary,
         }
-
-
 
 
 @dataclass(slots=True)
@@ -170,6 +166,5 @@ class CrewRunContext:
             "lookup": self.lookup,
             "invocations": [entry.as_dict() for entry in self.invocations],
         }
-
 
 

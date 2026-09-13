@@ -41,8 +41,6 @@ from agents.governance import (
 )
 
 
-
-
 class TestLeastAutonomy:
     def test_registry_invariants_hold(self) -> None:
         verify_registry_invariants()
@@ -107,8 +105,6 @@ class TestLeastAutonomy:
             verify_registry_invariants()
 
 
-
-
 class TestRiskClassification:
     def test_classified_high(self) -> None:
         assert RISK_LEVEL == "High"
@@ -142,8 +138,6 @@ class TestRiskClassification:
 
 
         json.dumps(governance_snapshot(SETTINGS))
-
-
 
 
 class TestBudgetCap:
@@ -237,6 +231,5 @@ class TestBudgetCap:
         assert len(service.generator.cache) == before
         assert service.sessions.transcript(session) == []
         assert service.blocked_calls == 1
-
 
 

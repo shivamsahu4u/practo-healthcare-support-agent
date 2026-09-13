@@ -126,13 +126,9 @@ REQUIRED_FIELDS: Final[tuple[str, ...]] = (
 )
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Errors
 # --------------------------------------------------------------------------- #
-
-
 
 
 class DatasetValidationError(ValueError):
@@ -150,13 +146,9 @@ class DatasetValidationError(ValueError):
         super().__init__(f"Dataset validation failed ({len(self.failures)} issue(s)):\n  - {joined}")
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Quota allocation
 # --------------------------------------------------------------------------- #
-
-
 
 
 def allocate_quota(total: int, weights: dict[str, int], *, minimum: int = 0) -> dict[str, int]:
@@ -213,8 +205,6 @@ def allocate_quota(total: int, weights: dict[str, int], *, minimum: int = 0) -> 
     return quota
 
 
-
-
 def _expand(quota: dict[str, int]) -> list[str]:
     """Turn ``{"a": 2, "b": 1}`` into ``["a", "a", "b"]`` in declared key order."""
     expanded: list[str] = []
@@ -223,13 +213,9 @@ def _expand(quota: dict[str, int]) -> list[str]:
     return expanded
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Generation
 # --------------------------------------------------------------------------- #
-
-
 
 
 @dataclass(frozen=True, slots=True)
@@ -262,8 +248,6 @@ class DatasetDesign:
         }
 
 
-
-
 DESIGN: Final[DatasetDesign] = DatasetDesign(
     seed=SEED,
     total_records=TOTAL_RECORDS,
@@ -277,15 +261,11 @@ DESIGN: Final[DatasetDesign] = DatasetDesign(
 )
 
 
-
-
 def _draw_fee(rng: random.Random, category: str) -> int:
     """Draw a fee inside the category's band, snapped to ``FEE_STEP_INR``."""
     low, high = FEE_BANDS_INR[category]
     # randrange's stop is exclusive, so add one step to keep `high` reachable.
     return rng.randrange(low, high + FEE_STEP_INR, FEE_STEP_INR)
-
-
 
 
 def generate_appointments(design: DatasetDesign = DESIGN) -> list[dict[str, Any]]:
@@ -341,13 +321,9 @@ def generate_appointments(design: DatasetDesign = DESIGN) -> list[dict[str, Any]
     return records
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Validation
 # --------------------------------------------------------------------------- #
-
-
 
 
 def validate_appointments(
@@ -467,8 +443,6 @@ def validate_appointments(
         raise DatasetValidationError(failures)
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Module-level dataset - validated at import time
 # --------------------------------------------------------------------------- #
@@ -484,8 +458,6 @@ APPOINTMENTS_BY_ID: Final[dict[str, dict[str, Any]]] = {
 }
 
 
-
-
 def get_appointment(record_id: str) -> dict[str, Any] | None:
     """Return the record for ``record_id``, or ``None`` when unknown.
 
@@ -498,13 +470,9 @@ def get_appointment(record_id: str) -> dict[str, Any] | None:
     return APPOINTMENTS_BY_ID.get(record_id.strip().upper())
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Reporting
 # --------------------------------------------------------------------------- #
-
-
 
 
 def summarise(
@@ -531,8 +499,6 @@ def summarise(
         "first_record_id": records[0]["record_id"],
         "last_record_id": records[-1]["record_id"],
     }
-
-
 
 
 def format_report(summary: dict[str, Any]) -> str:
@@ -611,16 +577,12 @@ def format_report(summary: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
-
-
 def write_report(destination: Path | None = None) -> Path:
     """Write the Markdown validation report and return its path."""
     target = destination or (REPORTS_DIR / "dataset_report.md")
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(format_report(summarise()), encoding="utf-8")
     return target
-
-
 
 
 def main() -> None:
@@ -632,10 +594,7 @@ def main() -> None:
     print(f"[dataset] {len(APPOINTMENTS)} records validated successfully")
 
 
-
-
 if __name__ == "__main__":
     main()
-
 
 

@@ -68,8 +68,6 @@ from rag.grounded_generation import GroundedGenerator
 # --------------------------------------------------------------------------- #
 
 
-
-
 def header(title: str, task: str) -> list[str]:
     """Standard transcript header, marking the output as really captured."""
     return [
@@ -92,16 +90,12 @@ def header(title: str, task: str) -> list[str]:
     ]
 
 
-
-
 def write(name: str, lines: list[str]) -> Path:
     TRANSCRIPTS_DIR.mkdir(parents=True, exist_ok=True)
     path = TRANSCRIPTS_DIR / name
     path.write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8")
     print(f"[demo] wrote {path}")
     return path
-
-
 
 
 def response_block(response: SupportResponse) -> list[str]:
@@ -135,8 +129,6 @@ def response_block(response: SupportResponse) -> list[str]:
     ]
 
 
-
-
 def make_context(query: str, *, trace_id: str, inject: bool = False) -> CrewRunContext:
     record_id = extract_record_id(query)
     return CrewRunContext(
@@ -149,13 +141,9 @@ def make_context(query: str, *, trace_id: str, inject: bool = False) -> CrewRunC
     )
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Task 4 - grounded generation
 # --------------------------------------------------------------------------- #
-
-
 
 
 def demo_rag(generator: GroundedGenerator) -> None:
@@ -226,13 +214,9 @@ def demo_rag(generator: GroundedGenerator) -> None:
     write("rag_demonstration.md", lines)
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Task 7 - tool invocation through crew.kickoff()
 # --------------------------------------------------------------------------- #
-
-
 
 
 def demo_tool_invocation(generator: GroundedGenerator) -> None:
@@ -304,13 +288,9 @@ def demo_tool_invocation(generator: GroundedGenerator) -> None:
     write("tool_invocation.md", lines)
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Task 8 - memory
 # --------------------------------------------------------------------------- #
-
-
 
 
 async def demo_memory(service: SupportService) -> None:
@@ -399,13 +379,9 @@ async def demo_memory(service: SupportService) -> None:
     write("memory_fresh_session.md", lines)
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Task 10 - guardrails
 # --------------------------------------------------------------------------- #
-
-
 
 
 async def demo_guardrails(service: SupportService) -> None:
@@ -483,13 +459,9 @@ async def demo_guardrails(service: SupportService) -> None:
     write("guardrails.md", lines)
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Task 14 - Autogen review
 # --------------------------------------------------------------------------- #
-
-
 
 
 async def demo_review(generator: GroundedGenerator) -> None:
@@ -588,13 +560,9 @@ async def demo_review(generator: GroundedGenerator) -> None:
     write("autogen_review.md", lines)
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Task 15 - budget cap and least autonomy
 # --------------------------------------------------------------------------- #
-
-
 
 
 async def demo_budget(service: SupportService) -> None:
@@ -673,8 +641,6 @@ async def demo_budget(service: SupportService) -> None:
         "",
     ]
     write("budget_rejection.md", lines)
-
-
 
 
 def demo_least_autonomy() -> None:
@@ -761,13 +727,9 @@ def demo_least_autonomy() -> None:
     write("least_autonomy.md", lines)
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Task 16 - cache
 # --------------------------------------------------------------------------- #
-
-
 
 
 def demo_cache(generator: GroundedGenerator) -> None:
@@ -864,13 +826,9 @@ def demo_cache(generator: GroundedGenerator) -> None:
     write("cache_hit.md", lines)
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Task 6 - escalation score
 # --------------------------------------------------------------------------- #
-
-
 
 
 def demo_escalation() -> None:
@@ -958,8 +916,6 @@ def demo_escalation() -> None:
         print(f"[demo] WARNING: could not update README: {exc}", file=sys.stderr)
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Entry point
 # --------------------------------------------------------------------------- #
@@ -976,8 +932,6 @@ DEMOS: dict[str, str] = {
     "cache": "Task 16 response cache",
     "escalation": "Task 6 escalation score",
 }
-
-
 
 
 async def _run_all(selected: list[str]) -> None:
@@ -1006,8 +960,6 @@ async def _run_all(selected: list[str]) -> None:
             await demo_review(generator)
         elif name == "budget":
             await demo_budget(service)
-
-
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -1041,10 +993,7 @@ def main(argv: list[str] | None = None) -> int:
     return 0
 
 
-
-
 if __name__ == "__main__":
     sys.exit(main())
-
 
 

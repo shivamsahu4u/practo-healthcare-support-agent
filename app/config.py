@@ -51,8 +51,6 @@ INDEX_STATE_FILE: Final[Path] = GENERATED_DIR / "index_state.json"
 load_dotenv(REPO_ROOT / ".env", override=False)
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Scenario vocabularies - the single source of truth
 # --------------------------------------------------------------------------- #
@@ -79,8 +77,6 @@ STATUSES: Final[tuple[str, ...]] = (
 )
 
 
-
-
 @dataclass(frozen=True, slots=True)
 class KbTopic:
     """One required knowledge-base topic.
@@ -98,8 +94,6 @@ class KbTopic:
     @property
     def filename(self) -> str:
         return f"{self.slug}.md"
-
-
 
 
 #: The twelve knowledge-base topics required by the brief, in brief order.
@@ -173,25 +167,17 @@ FALLBACK_ANSWER: Final[str] = (
 EXEMPLAR_RECORD_ID: Final[str] = "APT-XXXX"
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Environment helpers
 # --------------------------------------------------------------------------- #
-
-
 
 
 class ConfigurationError(RuntimeError):
     """Raised when an environment variable is present but unusable."""
 
 
-
-
 _TRUE = frozenset({"1", "true", "yes", "on"})
 _FALSE = frozenset({"0", "false", "no", "off"})
-
-
 
 
 def _raw(name: str) -> str | None:
@@ -200,8 +186,6 @@ def _raw(name: str) -> str | None:
         return None
     value = value.strip()
     return value or None
-
-
 
 
 def _bool_env(name: str, default: bool) -> bool:
@@ -219,8 +203,6 @@ def _bool_env(name: str, default: bool) -> bool:
     )
 
 
-
-
 def _int_env(name: str, default: int, *, minimum: int | None = None) -> int:
     value = _raw(name)
     if value is None:
@@ -234,8 +216,6 @@ def _int_env(name: str, default: int, *, minimum: int | None = None) -> int:
     return parsed
 
 
-
-
 def _float_env(name: str, default: float) -> float:
     value = _raw(name)
     if value is None:
@@ -244,8 +224,6 @@ def _float_env(name: str, default: float) -> float:
         return float(value)
     except ValueError as exc:
         raise ConfigurationError(f"{name}={value!r} is not a number.") from exc
-
-
 
 
 def _optional_float_env(name: str) -> float | None:
@@ -258,15 +236,11 @@ def _optional_float_env(name: str) -> float | None:
         raise ConfigurationError(f"{name}={value!r} is not a number.") from exc
 
 
-
-
 def _choice_env(name: str, default: str, allowed: tuple[str, ...]) -> str:
     value = _raw(name) or default
     if value not in allowed:
         raise ConfigurationError(f"{name}={value!r} must be one of {list(allowed)}.")
     return value
-
-
 
 
 def _path_env(name: str, default: Path) -> Path:
@@ -277,13 +251,9 @@ def _path_env(name: str, default: Path) -> Path:
     return candidate if candidate.is_absolute() else (REPO_ROOT / candidate).resolve()
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Settings
 # --------------------------------------------------------------------------- #
-
-
 
 
 @dataclass(frozen=True, slots=True)
@@ -472,8 +442,6 @@ class Settings:
         }
 
 
-
-
 def _apply_process_environment(settings: Settings) -> None:
     """Export the environment variables that third-party libraries read on import.
 
@@ -498,13 +466,9 @@ def _apply_process_environment(settings: Settings) -> None:
         os.environ.setdefault("HF_HUB_DISABLE_TELEMETRY", "1")
 
 
-
-
 #: Process-wide settings singleton. Import this, do not re-read the environment.
 SETTINGS: Final[Settings] = Settings.from_env()
 _apply_process_environment(SETTINGS)
-
-
 
 
 def ensure_runtime_directories(settings: Settings = SETTINGS) -> None:
@@ -513,6 +477,5 @@ def ensure_runtime_directories(settings: Settings = SETTINGS) -> None:
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     settings.chroma_persist_directory.mkdir(parents=True, exist_ok=True)
     settings.log_file.parent.mkdir(parents=True, exist_ok=True)
-
 
 

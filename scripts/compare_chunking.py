@@ -33,8 +33,6 @@ from rag.retriever import RetrievalError, Retriever
 from scripts.readme import MARKER_CHUNKING, ReadmeSectionError, replace_section
 
 
-
-
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--top-k", type=int, default=None, help="override TOP_K")
@@ -128,10 +126,7 @@ def main(argv: list[str] | None = None) -> int:
     return 0
 
 
-
-
 if __name__ == "__main__":
     sys.exit(main())
-
 
 

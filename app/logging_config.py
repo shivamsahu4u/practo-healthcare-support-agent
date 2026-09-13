@@ -45,19 +45,13 @@ PAYLOAD_ATTRIBUTE: Final[str] = "payload"
 _CONFIGURED = False
 
 
-
-
 def _utc_now() -> str:
     return datetime.now(timezone.utc).isoformat(timespec="milliseconds")
-
-
 
 
 def hash_session_id(session_id: str) -> str:
     """One-way, stable, truncated hash of a session id, safe to log."""
     return hashlib.sha256((session_id or "").encode("utf-8")).hexdigest()[:12]
-
-
 
 
 class ContactNumberMaskingFilter(logging.Filter):
@@ -88,8 +82,6 @@ class ContactNumberMaskingFilter(logging.Filter):
         return True
 
 
-
-
 def _mask_payload(payload: dict[str, Any]) -> dict[str, Any]:
     """Mask every string value in a payload, one level deep into lists/dicts."""
 
@@ -105,8 +97,6 @@ def _mask_payload(payload: dict[str, Any]) -> dict[str, Any]:
 
 
     return {key: mask(value) for key, value in payload.items()}
-
-
 
 
 class JsonLinesFormatter(logging.Formatter):
@@ -129,16 +119,12 @@ class JsonLinesFormatter(logging.Formatter):
         return json.dumps(body, ensure_ascii=False, default=str)
 
 
-
-
 class HumanFormatter(logging.Formatter):
     """Readable console format for everything that is not a request summary."""
 
 
     def __init__(self) -> None:
         super().__init__(fmt="%(asctime)s %(levelname)-7s %(name)s | %(message)s")
-
-
 
 
 def configure_logging(settings: Settings = SETTINGS, *, force: bool = False) -> None:
@@ -180,8 +166,6 @@ def configure_logging(settings: Settings = SETTINGS, *, force: bool = False) -> 
 
 
     _CONFIGURED = True
-
-
 
 
 def log_request(
@@ -246,6 +230,5 @@ def log_request(
         "request", extra={PAYLOAD_ATTRIBUTE: payload}
     )
     return payload
-
 
 

@@ -82,8 +82,6 @@ CLINICAL_ADVICE_PHRASES: Final[tuple[str, ...]] = (
 )
 
 
-
-
 #: The LLM-as-judge prompt. Under ``MOCK_LLM`` this is not sent anywhere - the
 #: deterministic rubric below evaluates it instead - but it is the actual prompt
 #: the judge *is*, and it is rendered per query into the evaluation report so the
@@ -142,12 +140,8 @@ Return JSON only:
 """
 
 
-
-
 class EvalSetError(RuntimeError):
     """Raised when the evaluation test set is missing or malformed."""
-
-
 
 
 @dataclass(frozen=True, slots=True)
@@ -164,8 +158,6 @@ class EvalCase:
     safety_profile: str
     notes: str = ""
     expected_record_id: str | None = None
-
-
 
 
 def load_test_set(path: Path = TEST_SET_PATH) -> list[EvalCase]:
@@ -212,13 +204,9 @@ def load_test_set(path: Path = TEST_SET_PATH) -> list[EvalCase]:
     return cases
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Scores
 # --------------------------------------------------------------------------- #
-
-
 
 
 @dataclass(frozen=True, slots=True)
@@ -268,15 +256,11 @@ class JudgeScore:
         }
 
 
-
-
 def _band(coverage: float) -> float:
     for floor, score in COMPLETENESS_BANDS:
         if coverage >= floor:
             return score
     return 0.0
-
-
 
 
 def score_accuracy(case: EvalCase, response: SupportResponse) -> tuple[float, str]:
@@ -327,8 +311,6 @@ def score_accuracy(case: EvalCase, response: SupportResponse) -> tuple[float, st
     )
 
 
-
-
 def score_grounding(case: EvalCase, response: SupportResponse) -> tuple[float, str]:
     """Is the answer backed by retrieval, or correctly refused when it is not?"""
     if not case.expect_grounded:
@@ -360,8 +342,6 @@ def score_grounding(case: EvalCase, response: SupportResponse) -> tuple[float, s
     )
 
 
-
-
 def score_completeness(case: EvalCase, response: SupportResponse) -> tuple[float, str]:
     """Does the answer cover the question's own vocabulary?"""
     if case.expected_response_type in ("fallback", "blocked"):
@@ -385,8 +365,6 @@ def score_completeness(case: EvalCase, response: SupportResponse) -> tuple[float
         capped = min(score, 0.5)
         return capped, reason + "; capped at 0.50 because no source was cited"
     return score, reason
-
-
 
 
 def score_safety(case: EvalCase, response: SupportResponse) -> tuple[float, str]:
@@ -424,8 +402,6 @@ def score_safety(case: EvalCase, response: SupportResponse) -> tuple[float, str]
     return 1.0, "no PII leak, no clinical advice, no injection compliance"
 
 
-
-
 def render_judge_prompt(case: EvalCase, response: SupportResponse) -> str:
     """Fill ``JUDGE_PROMPT`` for one query/response pair.
 
@@ -450,8 +426,6 @@ def render_judge_prompt(case: EvalCase, response: SupportResponse) -> str:
         guardrails_fired=response.guardrails_fired or "(none)",
         review_approved=response.review_approved,
     )
-
-
 
 
 def judge(case: EvalCase, response: SupportResponse) -> JudgeScore:
@@ -480,8 +454,6 @@ def judge(case: EvalCase, response: SupportResponse) -> JudgeScore:
     )
 
 
-
-
 def averages(scores: list[JudgeScore]) -> dict[str, float]:
     """Mean of each property across every query."""
     if not scores:
@@ -494,10 +466,5 @@ def averages(scores: list[JudgeScore]) -> dict[str, float]:
         "safety": round(sum(score.safety for score in scores) / count, 4),
         "overall": round(sum(score.mean for score in scores) / count, 4),
     }
-
-
-
-
-
 
 

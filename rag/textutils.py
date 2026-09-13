@@ -40,13 +40,9 @@ STOPWORDS: Final[frozenset[str]] = frozenset(
 _SENTENCE_BOUNDARY: Final[re.Pattern[str]] = re.compile(r"(?<=[.!?])\s+")
 
 
-
-
 def split_sentences(text: str) -> list[str]:
     """Split text into non-empty, stripped sentences."""
     return [part.strip() for part in _SENTENCE_BOUNDARY.split(text or "") if part.strip()]
-
-
 
 
 def content_words(text: str) -> list[str]:
@@ -66,13 +62,9 @@ def content_words(text: str) -> list[str]:
     return words
 
 
-
-
 def content_word_set(text: str) -> frozenset[str]:
     """``content_words`` as a set, for intersection arithmetic."""
     return frozenset(content_words(text))
-
-
 
 
 def overlap_ratio(candidate: str, reference: str) -> float:
@@ -91,8 +83,6 @@ def overlap_ratio(candidate: str, reference: str) -> float:
     return len(shared) / len(candidate_words)
 
 
-
-
 def keyword_score(query: str, sentence: str) -> float:
     """How much of ``query``'s vocabulary the sentence covers, in ``[0, 1]``.
 
@@ -105,8 +95,6 @@ def keyword_score(query: str, sentence: str) -> float:
     if not query_words:
         return 0.0
     return len(query_words & content_word_set(sentence)) / len(query_words)
-
-
 
 
 def select_relevant_sentences(query: str, context: str, limit: int) -> list[str]:
@@ -146,8 +134,6 @@ def select_relevant_sentences(query: str, context: str, limit: int) -> list[str]
     return [sentence for _, sentence in chosen]
 
 
-
-
 def unsupported_sentences(
     draft: str,
     support: str,
@@ -183,6 +169,5 @@ def unsupported_sentences(
         if sentence.strip() not in exempt
         and overlap_ratio(sentence, support) < minimum_overlap
     ]
-
 
 

@@ -49,8 +49,6 @@ LOGGER: Final = logging.getLogger(__name__)
 RESPONSE_PAYLOAD_KEY: Final[str] = "support_response"
 
 
-
-
 #: Ceiling on how many conversations are retained at once.
 #:
 #: ``session_id`` is client-supplied and conversation history deliberately
@@ -59,8 +57,6 @@ RESPONSE_PAYLOAD_KEY: Final[str] = "support_response"
 #: governance layer claims "bounded cost"; the response cache was bounded and
 #: this - the larger allocation - was not.
 DEFAULT_MAX_SESSIONS: Final[int] = 512
-
-
 
 
 class SessionMemory:
@@ -161,8 +157,6 @@ class SessionMemory:
         return {session: len(self.messages(session)) for session in self.sessions()}
 
 
-
-
 def resolve_record_id_from_history(history: list[BaseMessage]) -> str | None:
     """Find the most recently mentioned appointment id in a session history.
 
@@ -175,8 +169,6 @@ def resolve_record_id_from_history(history: list[BaseMessage]) -> str | None:
         if found:
             return found
     return None
-
-
 
 
 def build_memory_runnable(
@@ -209,6 +201,5 @@ def build_memory_runnable(
         input_messages_key="input",
         history_messages_key="history",
     )
-
 
 

@@ -23,8 +23,6 @@ from app.services.support_service import SupportService
 LOGGER: Final = logging.getLogger(__name__)
 
 
-
-
 @lru_cache(maxsize=1)
 def get_support_service() -> SupportService:
     """The process-wide ``SupportService`` singleton, built on first use."""
@@ -37,18 +35,13 @@ def get_support_service() -> SupportService:
     return SupportService(SETTINGS)
 
 
-
-
 def get_settings() -> Settings:
     """FastAPI dependency for the resolved settings."""
     return SETTINGS
 
 
-
-
 def reset_support_service() -> None:
     """Drop the cached singleton. Used by the test suite between cases."""
     get_support_service.cache_clear()
-
 
 

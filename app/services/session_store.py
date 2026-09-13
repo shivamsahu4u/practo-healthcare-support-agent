@@ -17,8 +17,6 @@ from typing import Any
 from agents.memory import SessionMemory
 
 
-
-
 class SessionStore:
     """Owns the process-wide session memory registry."""
 
@@ -49,6 +47,5 @@ class SessionStore:
             "active_sessions": self.memory.sessions(),
             "message_counts": self.memory.snapshot(),
         }
-
 
 

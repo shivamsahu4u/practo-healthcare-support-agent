@@ -56,12 +56,8 @@ OUT_OF_SCOPE_CALIBRATION_QUERIES: Final[tuple[str, ...]] = (
 )
 
 
-
-
 class CalibrationOverlapError(RuntimeError):
     """Raised when in-scope and out-of-scope similarities do not separate."""
-
-
 
 
 @dataclass(frozen=True, slots=True)
@@ -82,8 +78,6 @@ class QueryMeasurement:
             "top_document_id": self.top_document_id,
             "in_scope": self.in_scope,
         }
-
-
 
 
 @dataclass(frozen=True, slots=True)
@@ -158,8 +152,6 @@ class CalibrationResult:
         return payload
 
 
-
-
 def measure(
     retriever: Retriever,
     *,
@@ -200,8 +192,6 @@ def measure(
     )
 
 
-
-
 def write_calibration(
     result: CalibrationResult, *, path: Path = CALIBRATION_FILE
 ) -> Path:
@@ -216,8 +206,6 @@ def write_calibration(
     path.write_text(json.dumps(result.as_dict(), indent=2) + "\n", encoding="utf-8")
     LOGGER.info("wrote calibration to %s", path)
     return path
-
-
 
 
 def format_report(results: list[CalibrationResult], chosen: CalibrationResult) -> str:
@@ -303,8 +291,6 @@ def format_report(results: list[CalibrationResult], chosen: CalibrationResult) -
     return "\n".join(lines)
 
 
-
-
 def write_report(
     results: list[CalibrationResult],
     chosen: CalibrationResult,
@@ -316,8 +302,6 @@ def write_report(
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(format_report(results, chosen), encoding="utf-8")
     return target
-
-
 
 
 def format_readme_section(chosen: CalibrationResult) -> str:
@@ -357,6 +341,5 @@ def format_readme_section(chosen: CalibrationResult) -> str:
         f"`SIMILARITY_THRESHOLD={chosen.recommended_threshold:.4f}` in `.env`.",
     ]
     return "\n".join(lines)
-
 
 

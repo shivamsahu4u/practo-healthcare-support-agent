@@ -43,13 +43,9 @@ ResponseType = Literal["policy", "appointment", "combined", "fallback", "blocked
 MAX_INBOUND_TEXT_CHARACTERS: Final[int] = 8000
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Domain payloads
 # --------------------------------------------------------------------------- #
-
-
 
 
 class EscalationComponents(BaseModel):
@@ -67,8 +63,6 @@ class EscalationComponents(BaseModel):
     weight_follow_up: float = Field(gt=0.0, le=1.0)
     weight_aging: float = Field(gt=0.0, le=1.0)
     aging_cap_days: int = Field(gt=0)
-
-
 
 
 class AppointmentResult(BaseModel):
@@ -90,8 +84,6 @@ class AppointmentResult(BaseModel):
     escalation_threshold: float | None = Field(default=None, ge=0.0, le=1.0)
     components: EscalationComponents | None = None
     message: str | None = None
-
-
 
 
 class ReviewVerdict(BaseModel):
@@ -119,13 +111,9 @@ class ReviewVerdict(BaseModel):
         return self.reason
 
 
-
-
 # --------------------------------------------------------------------------- #
 # The crew's structured output contract
 # --------------------------------------------------------------------------- #
-
-
 
 
 class SupportResponse(BaseModel):
@@ -175,8 +163,6 @@ class SupportResponse(BaseModel):
         return [item for item in value if item and item.strip()]
 
 
-
-
 #: The declared ``response_format`` for the crew, in the sense Task 9 uses the
 #: term: the single Pydantic model every crew response must conform to.
 #:
@@ -190,13 +176,9 @@ class SupportResponse(BaseModel):
 RESPONSE_FORMAT: Final[type[SupportResponse]] = SupportResponse
 
 
-
-
 # --------------------------------------------------------------------------- #
 # HTTP request / response models
 # --------------------------------------------------------------------------- #
-
-
 
 
 class AskRequest(BaseModel):
@@ -240,8 +222,6 @@ class AskRequest(BaseModel):
         return value
 
 
-
-
 class AddDocumentRequest(BaseModel):
     """``POST /add-document`` request body.
 
@@ -264,8 +244,6 @@ class AddDocumentRequest(BaseModel):
     content: str = Field(min_length=20, max_length=4000)
 
 
-
-
 class AddDocumentResponse(BaseModel):
     """``POST /add-document`` response body."""
 
@@ -282,8 +260,6 @@ class AddDocumentResponse(BaseModel):
     total_chunks: int
     kb_version: int
     cache_entries_invalidated: int
-
-
 
 
 class HealthResponse(BaseModel):
@@ -331,8 +307,6 @@ class BudgetRejection(BaseModel):
     crew_invoked: Literal[False] = False
 
 
-
-
 class ErrorResponse(BaseModel):
     """Generic structured error body."""
 
@@ -345,13 +319,9 @@ class ErrorResponse(BaseModel):
     message: str
 
 
-
-
 # --------------------------------------------------------------------------- #
 # WebSocket frames
 # --------------------------------------------------------------------------- #
-
-
 
 
 class WsClientMessage(BaseModel):
@@ -373,8 +343,6 @@ class WsClientMessage(BaseModel):
     reset: bool = False
 
 
-
-
 class WsServerError(BaseModel):
     """One outbound WebSocket error frame. The socket stays open afterwards."""
 
@@ -388,8 +356,6 @@ class WsServerError(BaseModel):
     trace_id: str | None = None
 
 
-
-
 class WsServerAck(BaseModel):
     """Outbound acknowledgement for a control frame such as ``reset``."""
 
@@ -401,6 +367,5 @@ class WsServerAck(BaseModel):
     action: str
     session_id: str
     detail: str
-
 
 

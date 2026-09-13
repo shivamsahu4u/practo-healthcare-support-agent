@@ -54,14 +54,10 @@ APPOINTMENT_INTENT_STEMS: Final[tuple[str, ...]] = (
 )
 
 
-
-
 def extract_record_id(text: str) -> str | None:
     """Return the first appointment id in ``text``, normalised, or ``None``."""
     match = RECORD_ID_PATTERN.search(text or "")
     return f"APT-{match.group(1)}" if match else None
-
-
 
 
 def _contains_any(text: str, stems: tuple[str, ...]) -> bool:
@@ -69,20 +65,14 @@ def _contains_any(text: str, stems: tuple[str, ...]) -> bool:
     return any(stem in lowered for stem in stems)
 
 
-
-
 def has_policy_intent(text: str) -> bool:
     """True when the text asks about clinic policy."""
     return _contains_any(text, POLICY_KEYWORD_STEMS)
 
 
-
-
 def has_appointment_intent(text: str) -> bool:
     """True when the text asks about a specific appointment's state."""
     return _contains_any(text, APPOINTMENT_INTENT_STEMS)
-
-
 
 
 def classify_route(text: str, *, record_id_from_memory: str | None = None) -> str:
@@ -126,6 +116,5 @@ def classify_route(text: str, *, record_id_from_memory: str | None = None) -> st
 
 
     return ROUTE_POLICY
-
 
 

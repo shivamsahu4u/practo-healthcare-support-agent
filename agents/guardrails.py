@@ -122,13 +122,9 @@ GROUNDEDNESS_REFUSAL_MESSAGE: Final[str] = (
 )
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Findings
 # --------------------------------------------------------------------------- #
-
-
 
 
 @dataclass(frozen=True, slots=True)
@@ -159,8 +155,6 @@ class PiiFinding:
         }
 
 
-
-
 @dataclass(frozen=True, slots=True)
 class InjectionFinding:
     """One prompt-injection pattern match."""
@@ -172,8 +166,6 @@ class InjectionFinding:
 
     def as_dict(self) -> dict[str, Any]:
         return {"pattern_name": self.pattern_name, "matched_text": self.matched_text}
-
-
 
 
 @dataclass(slots=True)
@@ -216,8 +208,6 @@ class GuardrailReport:
         }
 
 
-
-
 @dataclass(frozen=True, slots=True)
 class GroundednessReport:
     """Result of the output-side groundedness check."""
@@ -238,20 +228,14 @@ class GroundednessReport:
         }
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Input side
 # --------------------------------------------------------------------------- #
 
 
-
-
 def _fingerprint(value: str) -> str:
     """Short, non-reversible fingerprint so two masks can be correlated safely."""
     return hashlib.sha256(value.encode("utf-8")).hexdigest()[:12]
-
-
 
 
 def mask_contact_numbers(text: str) -> tuple[str, tuple[PiiFinding, ...]]:
@@ -289,11 +273,7 @@ def mask_contact_numbers(text: str) -> tuple[str, tuple[PiiFinding, ...]]:
     return "".join(pieces), tuple(findings)
 
 
-
-
 _NON_DIGITS: Final[re.Pattern[str]] = re.compile(r"[^\d]")
-
-
 
 
 @dataclass(frozen=True, slots=True)
@@ -316,8 +296,6 @@ class ContactNumberCheck:
             "digit_count": self.digit_count,
             "reason": self.reason,
         }
-
-
 
 
 def validate_contact_number(value: str) -> ContactNumberCheck:
@@ -374,8 +352,6 @@ def validate_contact_number(value: str) -> ContactNumberCheck:
     )
 
 
-
-
 def detect_prompt_injection(text: str) -> tuple[InjectionFinding, ...]:
     """Match the deterministic injection denylist against ``text``.
 
@@ -392,8 +368,6 @@ def detect_prompt_injection(text: str) -> tuple[InjectionFinding, ...]:
                 InjectionFinding(pattern_name=name, matched_text=match.group(0)[:120])
             )
     return tuple(findings)
-
-
 
 
 def apply_input_guardrails(text: str) -> GuardrailReport:
@@ -424,13 +398,9 @@ def apply_input_guardrails(text: str) -> GuardrailReport:
     )
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Output side
 # --------------------------------------------------------------------------- #
-
-
 
 
 def check_groundedness(
@@ -496,6 +466,5 @@ def check_groundedness(
         unsupported=(),
         reason="every sentence is supported by the retrieved context",
     )
-
 
 

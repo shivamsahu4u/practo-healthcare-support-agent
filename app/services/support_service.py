@@ -86,8 +86,6 @@ LOGGER: Final = logging.getLogger(__name__)
 GUARDRAIL_GROUNDEDNESS: Final[str] = "output_groundedness_refusal"
 
 
-
-
 @dataclass(frozen=True, slots=True)
 class TurnParams:
     """Per-turn inputs that are not part of the memory payload."""
@@ -99,8 +97,6 @@ class TurnParams:
     collection_name: str | None = None
     top_k: int | None = None
     inject_unsupported_claim: bool = False
-
-
 
 
 class SupportService:
@@ -545,6 +541,5 @@ class SupportService:
             },
             settings=self.settings,
         )
-
 
 

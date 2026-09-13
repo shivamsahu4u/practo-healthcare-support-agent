@@ -28,19 +28,13 @@ from dataset import (
 )
 
 
-
-
 def test_generation_is_deterministic() -> None:
     assert generate_appointments() == generate_appointments()
     assert generate_appointments() == APPOINTMENTS
 
 
-
-
 def test_at_least_forty_records() -> None:
     assert len(APPOINTMENTS) >= 40
-
-
 
 
 def test_record_ids_are_unique_and_sequential() -> None:
@@ -50,14 +44,10 @@ def test_record_ids_are_unique_and_sequential() -> None:
     assert ids[-1] == f"APT-{1000 + len(APPOINTMENTS)}"
 
 
-
-
 def test_every_category_has_at_least_three_records() -> None:
     counts = Counter(record["category"] for record in APPOINTMENTS)
     for category in CATEGORIES:
         assert counts[category] >= MIN_RECORDS_PER_CATEGORY, category
-
-
 
 
 def test_every_status_appears_at_least_once() -> None:
@@ -66,14 +56,10 @@ def test_every_status_appears_at_least_once() -> None:
         assert counts[status] >= 1, status
 
 
-
-
 def test_follow_up_share_lands_in_the_required_band() -> None:
     share = summarise()["follow_up_required_percentage"]
     low, high = FOLLOW_UP_BAND
     assert low <= share <= high
-
-
 
 
 def test_field_types_and_ranges() -> None:
@@ -90,8 +76,6 @@ def test_field_types_and_ranges() -> None:
         assert fee % DESIGN.fee_step_inr == 0
 
 
-
-
 def test_lookup_is_case_insensitive() -> None:
     record = APPOINTMENTS[3]
     assert get_appointment(record["record_id"]) == record
@@ -99,8 +83,6 @@ def test_lookup_is_case_insensitive() -> None:
     assert get_appointment(f"  {record['record_id']}  ") == record
     assert get_appointment("APT-9999") is None
     assert get_appointment(None) is None  # type: ignore[arg-type]
-
-
 
 
 class TestAllocateQuota:
@@ -135,8 +117,6 @@ class TestAllocateQuota:
     ) -> None:
         with pytest.raises(ValueError):
             allocate_quota(total, weights, minimum=minimum)
-
-
 
 
 class TestValidation:
@@ -206,6 +186,5 @@ class TestValidation:
         with pytest.raises(DatasetValidationError) as excinfo:
             validate_appointments(broken)
         assert len(excinfo.value.failures) >= 2
-
 
 

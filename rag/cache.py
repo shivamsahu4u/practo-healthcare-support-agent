@@ -37,8 +37,6 @@ _WHITESPACE: Final[re.Pattern[str]] = re.compile(r"\s+")
 T = TypeVar("T")
 
 
-
-
 def normalise_query(query: str) -> str:
     """Deterministic query normalisation: strip, lowercase, collapse whitespace.
 
@@ -47,8 +45,6 @@ def normalise_query(query: str) -> str:
     ``"what is the cancellation window?"`` therefore share one cache entry.
     """
     return _WHITESPACE.sub(" ", (query or "").strip().lower())
-
-
 
 
 def make_cache_key(
@@ -87,8 +83,6 @@ def make_cache_key(
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
 
-
-
 @dataclass(slots=True)
 class CacheStats:
     """Counters used as the before/after evidence for the Task 16 demonstration."""
@@ -119,8 +113,6 @@ class CacheStats:
             "evictions": self.evictions,
             "invalidations": self.invalidations,
         }
-
-
 
 
 class ResponseCache(Generic[T]):
@@ -201,6 +193,5 @@ class ResponseCache(Generic[T]):
                 "max_entries": self._max_entries,
                 **self.stats.as_dict(),
             }
-
 
 

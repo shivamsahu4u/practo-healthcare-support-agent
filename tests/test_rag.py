@@ -38,8 +38,6 @@ from rag.textutils import overlap_ratio, select_relevant_sentences
 from tests.fakes import FakeChromaClient, FakeEmbedder
 
 
-
-
 class TestIndexing:
     def test_each_strategy_gets_its_own_collection(
         self, built_index: FakeChromaClient, test_settings: Settings
@@ -102,8 +100,6 @@ class TestIndexing:
         assert second.kb_version == first.kb_version + 1
 
 
-
-
 class TestRetrieval:
     def test_returns_at_most_top_k(self, retriever: Retriever) -> None:
         result = retriever.search("cancellation window", top_k=2)
@@ -154,8 +150,6 @@ class TestRetrieval:
         retriever.search("lab test turnaround")
         retriever.search("home visit eligibility")
         assert retriever.query_count == 2
-
-
 
 
 class TestGroundedGeneration:
@@ -212,8 +206,6 @@ class TestGroundedGeneration:
         assert generator.stats.fallbacks == 1
 
 
-
-
 class TestThresholdResolution:
     def test_missing_calibration_raises_rather_than_guessing(
         self, test_settings: Settings, tmp_path
@@ -251,8 +243,6 @@ class TestThresholdResolution:
         path.write_text("{not json", encoding="utf-8")
         with pytest.raises(CalibrationRequiredError):
             resolve_threshold(test_settings, calibration_file=path)
-
-
 
 
 class TestCalibration:
@@ -298,8 +288,6 @@ class TestCalibration:
     def test_rejects_too_few_probes(self, retriever: Retriever) -> None:
         with pytest.raises(ValueError):
             measure(retriever, in_scope=("only one",), out_of_scope=("a", "b"))
-
-
 
 
 class TestPrecisionRecall:
@@ -386,8 +374,6 @@ class TestPrecisionRecall:
             assert len(docs) <= len(query_score.retrieved_chunk_ids)
 
 
-
-
 class TestEmbeddingHelpers:
     def test_normalisation_produces_unit_vectors(self) -> None:
         vector = l2_normalise([3.0, 4.0])
@@ -418,8 +404,6 @@ class TestEmbeddingHelpers:
             DeterministicHashEmbedder(64).encode("not a sequence")  # type: ignore[arg-type]
 
 
-
-
 class TestTextUtils:
     def test_overlap_ratio_of_a_verbatim_sentence_is_one(self) -> None:
         context = "Cancellation is free up to 4 hours before the appointment."
@@ -447,6 +431,5 @@ class TestTextUtils:
     def test_selection_rejects_a_non_positive_limit(self) -> None:
         with pytest.raises(ValueError):
             select_relevant_sentences("q", "A sentence.", 0)
-
 
 

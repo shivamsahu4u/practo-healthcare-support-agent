@@ -32,8 +32,6 @@ GROUNDED_CONTEXT = (
 )
 
 
-
-
 def make_session(draft: str, *, grounded: bool = True) -> ReviewSession:
     return ReviewSession(
         query="How long before my appointment can I cancel without paying a fee?",
@@ -45,8 +43,6 @@ def make_session(draft: str, *, grounded: bool = True) -> ReviewSession:
         retrieval_grounded=grounded,
         minimum_overlap=0.6,
     )
-
-
 
 
 class TestVerdictModel:
@@ -67,8 +63,6 @@ class TestVerdictModel:
             approved=True, final_answer="answer", reason="because"
         )
         assert ReviewVerdict.model_validate_json(verdict.model_dump_json()) == verdict
-
-
 
 
 class TestSupportDetection:
@@ -94,8 +88,6 @@ class TestSupportDetection:
         assert strip_sentences(GROUNDED_CONTEXT, ["Not present."]).startswith(
             "An appointment can be cancelled"
         )
-
-
 
 
 class TestDeterministicVerdict:
@@ -139,8 +131,6 @@ class TestDeterministicVerdict:
         assert deterministic_verdict(session) == deterministic_verdict(session)
 
 
-
-
 class TestReviewerCritique:
     def test_a_clean_draft_reports_no_finding(self) -> None:
         critique = reviewer_critique(make_session(GROUNDED_CONTEXT))
@@ -161,8 +151,6 @@ class TestReviewerCritique:
         assert "no admissible policy support" in critique
 
 
-
-
 class TestTaskMessage:
     def test_carries_everything_the_reviewer_needs(self) -> None:
         message = make_session(GROUNDED_CONTEXT).task_message()
@@ -177,16 +165,12 @@ class TestTaskMessage:
         assert "no appointment lookup" in make_session(GROUNDED_CONTEXT).task_message()
 
 
-
-
 class TestRoleMarkers:
     def test_each_system_message_carries_exactly_one_marker(self) -> None:
         assert MARKER_REVIEWER in REVIEWER_SYSTEM_MESSAGE
         assert MARKER_EDITOR not in REVIEWER_SYSTEM_MESSAGE
         assert MARKER_EDITOR in EDITOR_SYSTEM_MESSAGE
         assert MARKER_REVIEWER not in EDITOR_SYSTEM_MESSAGE
-
-
 
 
 @pytest.mark.requires_autogen
@@ -263,6 +247,5 @@ class TestRealAutogenTeam:
 
         with pytest.raises(ReviewUnavailableError):
             await client.create([Bare()])
-
 
 

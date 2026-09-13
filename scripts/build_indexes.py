@@ -24,8 +24,6 @@ from rag.embeddings import EmbeddingModelUnavailableError
 from rag.indexer import VectorIndexError, build_indexes
 
 
-
-
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
@@ -68,10 +66,7 @@ def main(argv: list[str] | None = None) -> int:
     return 0
 
 
-
-
 if __name__ == "__main__":
     sys.exit(main())
-
 
 

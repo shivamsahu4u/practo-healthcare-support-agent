@@ -117,8 +117,6 @@ SERVICE_UNAVAILABLE_ERRORS: Final[tuple[type[Exception], ...]] = (
 ) + PIPELINE_UNAVAILABLE_ERRORS
 
 
-
-
 @asynccontextmanager
 async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
     """Start-up and shut-down.
@@ -138,8 +136,6 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
     )
     yield
     LOGGER.info("Practo support agent shutting down")
-
-
 
 
 app = FastAPI(
@@ -206,13 +202,9 @@ async def health(
     )
 
 
-
-
 # --------------------------------------------------------------------------- #
 # GET /governance
 # --------------------------------------------------------------------------- #
-
-
 
 
 @app.get("/governance", response_model=GovernanceResponse, tags=["governance"])
@@ -221,13 +213,9 @@ async def governance(settings: Settings = Depends(get_settings)) -> GovernanceRe
     return GovernanceResponse.model_validate(governance_snapshot(settings))
 
 
-
-
 # --------------------------------------------------------------------------- #
 # POST /ask
 # --------------------------------------------------------------------------- #
-
-
 
 
 @app.post(
@@ -293,13 +281,9 @@ async def ask(
         ) from exc
 
 
-
-
 # --------------------------------------------------------------------------- #
 # POST /add-document
 # --------------------------------------------------------------------------- #
-
-
 
 
 @app.post("/add-document", response_model=AddDocumentResponse, tags=["knowledge-base"])
@@ -394,13 +378,9 @@ async def add_knowledge_document(
     )
 
 
-
-
 # --------------------------------------------------------------------------- #
 # WS /ws/chat/{session_id}
 # --------------------------------------------------------------------------- #
-
-
 
 
 @app.websocket("/ws/chat/{session_id}")
@@ -520,8 +500,6 @@ async def chat_socket(
             pass
 
 
-
-
 def describe_routes() -> list[dict[str, Any]]:
     """Every registered route. Used by the acceptance-check script."""
     described: list[dict[str, Any]] = []
@@ -535,6 +513,5 @@ def describe_routes() -> list[dict[str, Any]]:
             }
         )
     return described
-
 
 

@@ -91,13 +91,9 @@ MAX_TOOL_ATTEMPTS: Final[int] = 2
 _OBSERVATION_MARKER: Final[re.Pattern[str]] = re.compile(r"Observation\s*:", re.IGNORECASE)
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Message helpers
 # --------------------------------------------------------------------------- #
-
-
 
 
 def normalise_messages(messages: str | Sequence[Any]) -> list[dict[str, str]]:
@@ -116,8 +112,6 @@ def normalise_messages(messages: str | Sequence[Any]) -> list[dict[str, str]]:
             content = getattr(message, "content", "")
         normalised.append({"role": role, "content": "" if content is None else str(content)})
     return normalised
-
-
 
 
 def extract_generated_observation(messages: str | Sequence[Any]) -> str | None:
@@ -156,13 +150,9 @@ def extract_generated_observation(messages: str | Sequence[Any]) -> str | None:
     return None
 
 
-
-
 # --------------------------------------------------------------------------- #
 # ReAct formatting
 # --------------------------------------------------------------------------- #
-
-
 
 
 def format_action(tool_name: str, arguments: dict[str, Any], thought: str) -> str:
@@ -178,20 +168,14 @@ def format_action(tool_name: str, arguments: dict[str, Any], thought: str) -> st
     return f"Thought: {thought}\nAction: {tool_name}\nAction Input: {payload}"
 
 
-
-
 def format_final_answer(answer: str) -> str:
     """Render a CrewAI ReAct final-answer turn."""
     return f"Thought: I now can give a great answer\nFinal Answer: {answer}"
 
 
-
-
 # --------------------------------------------------------------------------- #
 # The mock LLM
 # --------------------------------------------------------------------------- #
-
-
 
 
 class MockCrewLLM(BaseLLM):
@@ -368,8 +352,6 @@ class MockCrewLLM(BaseLLM):
         )
 
 
-
-
 def build_mock_llms(
     context: CrewRunContext, tools_for_agent: dict[str, list[Any]]
 ) -> dict[str, MockCrewLLM]:
@@ -378,6 +360,5 @@ def build_mock_llms(
         agent_key: MockCrewLLM(agent_key=agent_key, context=context, tools=assigned)
         for agent_key, assigned in tools_for_agent.items()
     }
-
 
 

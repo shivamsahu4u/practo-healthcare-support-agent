@@ -76,19 +76,13 @@ MARKER_FINDINGS_CLOSE: Final[str] = "[[/UNSUPPORTED_SENTENCES]]"
 MARKER_RETRIEVAL_FAILED: Final[str] = "[[RETRIEVAL_BELOW_THRESHOLD]]"
 
 
-
-
 class ReviewUnavailableError(RuntimeError):
     """Raised when the Autogen review stage cannot run."""
-
-
 
 
 # --------------------------------------------------------------------------- #
 # Review session + deterministic verdict logic
 # --------------------------------------------------------------------------- #
-
-
 
 
 @dataclass(slots=True)
@@ -143,8 +137,6 @@ class ReviewSession:
         )
 
 
-
-
 def find_unsupported(session: ReviewSession) -> list[str]:
     """Drafted sentences not supported by the session's support text."""
     return unsupported_sentences(
@@ -155,8 +147,6 @@ def find_unsupported(session: ReviewSession) -> list[str]:
     )
 
 
-
-
 def strip_sentences(draft: str, remove: Sequence[str]) -> str:
     """Drop the named sentences from ``draft``, keeping the rest verbatim."""
     removal = {sentence.strip() for sentence in remove}
@@ -164,8 +154,6 @@ def strip_sentences(draft: str, remove: Sequence[str]) -> str:
         sentence for sentence in split_sentences(draft) if sentence.strip() not in removal
     ]
     return " ".join(kept).strip()
-
-
 
 
 def format_findings_block(retrieval_failed: bool, unsupported: Sequence[str]) -> str:
@@ -182,8 +170,6 @@ def format_findings_block(retrieval_failed: bool, unsupported: Sequence[str]) ->
     lines.extend(" ".join(sentence.split()) for sentence in unsupported)
     lines.append(MARKER_FINDINGS_CLOSE)
     return "\n".join(lines)
-
-
 
 
 def parse_reviewer_findings(text: str) -> tuple[bool, list[str]] | None:
@@ -206,8 +192,6 @@ def parse_reviewer_findings(text: str) -> tuple[bool, list[str]] | None:
         return None
     body = text[start + len(MARKER_FINDINGS_OPEN) : end]
     return False, [line.strip() for line in body.splitlines() if line.strip()]
-
-
 
 
 def verdict_from_findings(
@@ -286,8 +270,6 @@ def verdict_from_findings(
     )
 
 
-
-
 def deterministic_verdict(session: ReviewSession) -> ReviewVerdict:
     """The verdict the review team is expected to reach.
 
@@ -301,8 +283,6 @@ def deterministic_verdict(session: ReviewSession) -> ReviewVerdict:
     return verdict_from_findings(
         session, not session.retrieval_grounded, find_unsupported(session)
     )
-
-
 
 
 def reviewer_critique(session: ReviewSession) -> str:
@@ -350,13 +330,9 @@ def reviewer_critique(session: ReviewSession) -> str:
     return prose + "\n" + format_findings_block(retrieval_failed, unsupported)
 
 
-
-
 # --------------------------------------------------------------------------- #
 # The mock Autogen model client
 # --------------------------------------------------------------------------- #
-
-
 
 
 def build_mock_client(session: ReviewSession) -> Any:
@@ -579,8 +555,6 @@ def build_mock_client(session: ReviewSession) -> Any:
     return MockChatCompletionClient(session)
 
 
-
-
 # --------------------------------------------------------------------------- #
 # The team
 # --------------------------------------------------------------------------- #
@@ -610,8 +584,6 @@ EDITOR_SYSTEM_MESSAGE: Final[str] = (
 )
 
 
-
-
 @dataclass(slots=True)
 class ReviewOutcome:
     """The review stage's result plus the transcript that produced it."""
@@ -634,8 +606,6 @@ class ReviewOutcome:
         }
 
 
-
-
 def _extract_verdict(messages: Sequence[Any]) -> ReviewVerdict | None:
     """Pull the structured verdict out of the team's message list."""
     for message in reversed(messages):
@@ -650,8 +620,6 @@ def _extract_verdict(messages: Sequence[Any]) -> ReviewVerdict | None:
         } <= set(content):
             return ReviewVerdict.model_validate(content)
     return None
-
-
 
 
 async def review_draft(
@@ -746,11 +714,8 @@ async def review_draft(
     )
 
 
-
-
 def review_draft_sync(session: ReviewSession, settings: Settings = SETTINGS) -> ReviewOutcome:
     """Blocking wrapper for scripts and tests. Not for use inside a running loop."""
     return asyncio.run(review_draft(session, settings))
-
 
 

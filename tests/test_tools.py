@@ -29,8 +29,6 @@ from app.models import AppointmentResult
 from dataset import APPOINTMENTS
 
 
-
-
 class TestEscalationScore:
     def test_weights_sum_to_one(self) -> None:
         assert WEIGHT_FOLLOW_UP + WEIGHT_AGING == pytest.approx(1.0)
@@ -85,8 +83,6 @@ class TestEscalationScore:
         assert scores == sorted(scores)
 
 
-
-
 class TestEscalationThreshold:
     def test_threshold_is_a_valid_probability(self) -> None:
         assert 0.0 <= escalation_threshold() <= 1.0
@@ -122,8 +118,6 @@ class TestEscalationThreshold:
             distribution["escalated_without_follow_up_flag"]
             or distribution["follow_up_flag_but_not_escalated"]
         ), "the escalation score is not blending its two signals"
-
-
 
 
 class TestCheckAppointmentStatus:
@@ -169,8 +163,6 @@ class TestCheckAppointmentStatus:
         for record in APPOINTMENTS[:5]:
             AppointmentResult.model_validate(check_appointment_status(record["record_id"]))
         AppointmentResult.model_validate(check_appointment_status("APT-9999"))
-
-
 
 
 class TestSchemaBasedDispatch:
@@ -247,6 +239,5 @@ class TestSchemaBasedDispatch:
 
         with pytest.raises(ToolDispatchError):
             classify_tool(OtherTool())
-
 
 

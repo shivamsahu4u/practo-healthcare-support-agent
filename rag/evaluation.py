@@ -30,8 +30,6 @@ from app.config import REPORTS_DIR, SETTINGS, STRATEGY_FIXED, STRATEGY_SENTENCE,
 from rag.retriever import Retriever
 
 
-
-
 @dataclass(frozen=True, slots=True)
 class DemoQuery:
     """One evaluation query with its document-level ground truth."""
@@ -42,8 +40,6 @@ class DemoQuery:
     relevant_document_ids: frozenset[str]
     in_scope: bool = True
     note: str = ""
-
-
 
 
 #: The canonical query set. Tasks 4 and 5 share it, exactly as the brief
@@ -101,13 +97,9 @@ OUT_OF_SCOPE_DEMO_QUERIES: Final[tuple[DemoQuery, ...]] = tuple(
 )
 
 
-
-
 def _render_set(values: list[str] | frozenset[str]) -> str:
     ordered = sorted(values)
     return "{" + ", ".join(ordered) + "}" if ordered else "{}"
-
-
 
 
 @dataclass(frozen=True, slots=True)
@@ -179,8 +171,6 @@ class QueryScore:
         }
 
 
-
-
 @dataclass(frozen=True, slots=True)
 class StrategyScore:
     """Aggregated precision / recall for one collection across all queries."""
@@ -236,8 +226,6 @@ class StrategyScore:
         }
 
 
-
-
 def score_collection(
     retriever: Retriever,
     collection_name: str,
@@ -271,8 +259,6 @@ def score_collection(
     return StrategyScore(
         collection_name=collection_name, strategy=strategy, scores=tuple(scores)
     )
-
-
 
 
 def recommend_strategy(scores: dict[str, StrategyScore]) -> tuple[str, str]:
@@ -321,8 +307,6 @@ def recommend_strategy(scores: dict[str, StrategyScore]) -> tuple[str, str]:
         "recommendation follows from the measurements rather than from preference."
     )
     return winner.collection_name, " ".join(sentences)
-
-
 
 
 def format_report(
@@ -425,8 +409,6 @@ def format_report(
     return "\n".join(lines)
 
 
-
-
 def format_readme_section(
     scores: dict[str, StrategyScore], recommendation: tuple[str, str]
 ) -> str:
@@ -457,8 +439,6 @@ def format_readme_section(
     return "\n".join(lines)
 
 
-
-
 def write_report(
     scores: dict[str, StrategyScore],
     recommendation: tuple[str, str],
@@ -473,6 +453,5 @@ def write_report(
         format_report(scores, recommendation, fallback_check=fallback_check), encoding="utf-8"
     )
     return target
-
 
 

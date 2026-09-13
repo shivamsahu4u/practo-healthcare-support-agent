@@ -23,8 +23,6 @@ from rag.chunking import (
 )
 
 
-
-
 class TestFixedSizeChunking:
     def test_short_text_is_one_chunk(self) -> None:
         assert chunk_fixed_size("A short policy sentence.", 480, 96) == [
@@ -75,8 +73,6 @@ class TestFixedSizeChunking:
         assert "".join(dict.fromkeys(chunks[0])) == "x"
 
 
-
-
 class TestSentenceChunking:
     def test_groups_whole_sentences(self) -> None:
         text = "One. Two. Three. Four. Five."
@@ -94,8 +90,6 @@ class TestSentenceChunking:
 
     def test_splitting_handles_all_terminators(self) -> None:
         assert split_sentences("A? B! C.") == ["A?", "B!", "C."]
-
-
 
 
 class TestMetadata:
@@ -145,8 +139,6 @@ class TestMetadata:
     ) -> None:
         with pytest.raises(ValueError):
             chunk_document(documents[0], "no_such_strategy", test_settings)
-
-
 
 
 class TestKnowledgeBase:
@@ -215,10 +207,7 @@ class TestKnowledgeBase:
         assert "missing required topic" in str(excinfo.value)
 
 
-
-
 def test_normalise_whitespace_collapses_runs() -> None:
     assert normalise_whitespace("  a \n\n b\t c ") == "a b c"
-
 
 

@@ -51,19 +51,13 @@ LOGGER: Final = logging.getLogger(__name__)
 MAX_ANSWER_SENTENCES: Final[int] = 3
 
 
-
-
 class CalibrationRequiredError(RuntimeError):
     """Raised when no measured similarity threshold is available."""
-
-
 
 
 # --------------------------------------------------------------------------- #
 # Threshold resolution
 # --------------------------------------------------------------------------- #
-
-
 
 
 @dataclass(frozen=True, slots=True)
@@ -74,8 +68,6 @@ class ThresholdSource:
     value: float
     origin: str
     detail: str
-
-
 
 
 def resolve_threshold(
@@ -138,13 +130,9 @@ def resolve_threshold(
     )
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Answers
 # --------------------------------------------------------------------------- #
-
-
 
 
 @dataclass(frozen=True, slots=True)
@@ -199,8 +187,6 @@ class GroundedAnswer:
         )
 
 
-
-
 def _attributed_topic(sentence: str, result: RetrievalResult) -> str:
     """Topic title of the retrieved chunk that actually contains ``sentence``."""
     needle = " ".join(sentence.split())
@@ -211,8 +197,6 @@ def _attributed_topic(sentence: str, result: RetrievalResult) -> str:
     # chunking snaps to word boundaries, not sentence boundaries. Fall back to the
     # best-ranked chunk, which is what the whole answer used to be attributed to.
     return result.chunks[0].topic_title or "policy"
-
-
 
 
 def compose_grounded_answer(query: str, result: RetrievalResult) -> str:
@@ -252,13 +236,9 @@ def compose_grounded_answer(query: str, result: RetrievalResult) -> str:
     )
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Generator
 # --------------------------------------------------------------------------- #
-
-
 
 
 @dataclass(slots=True)
@@ -277,8 +257,6 @@ class GenerationStats:
             "cache_hits": self.cache_hits,
             "fallbacks": self.fallbacks,
         }
-
-
 
 
 class GroundedGenerator:
@@ -447,6 +425,5 @@ class GroundedGenerator:
         )
         self.cache.set(key, generated)
         return generated
-
 
 

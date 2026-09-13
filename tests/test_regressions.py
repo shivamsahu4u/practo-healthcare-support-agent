@@ -66,8 +66,6 @@ GROUNDED_SUPPORT = (
 )
 
 
-
-
 def make_chunk(document_id: str, topic_title: str, text: str, rank: int) -> RetrievedChunk:
     return RetrievedChunk(
         chunk_id=f"sentence_based::{document_id}::00{rank}",
@@ -80,8 +78,6 @@ def make_chunk(document_id: str, topic_title: str, text: str, rank: int) -> Retr
         similarity=0.9 - (rank / 100),
         distance=0.1 + (rank / 100),
     )
-
-
 
 
 def make_review_session(draft: str) -> ReviewSession:
@@ -97,13 +93,9 @@ def make_review_session(draft: str) -> ReviewSession:
     )
 
 
-
-
 # --------------------------------------------------------------------------- #
 # C1 - the assistant's own guidance used to poison session memory
 # --------------------------------------------------------------------------- #
-
-
 
 
 class TestExemplarIdCannotPoisonMemory:
@@ -151,13 +143,9 @@ class TestExemplarIdCannotPoisonMemory:
         assert resolve_record_id_from_history(history) == "APT-1007"
 
 
-
-
 # --------------------------------------------------------------------------- #
 # M1 / M3 - inbound bounds belong in the schema
 # --------------------------------------------------------------------------- #
-
-
 
 
 class TestInboundRequestBounds:
@@ -205,13 +193,9 @@ class TestInboundRequestBounds:
             WsClientMessage(query="x" * (MAX_INBOUND_TEXT_CHARACTERS + 1))
 
 
-
-
 # --------------------------------------------------------------------------- #
 # M7 - the cache key ignored the embedding backend
 # --------------------------------------------------------------------------- #
-
-
 
 
 class TestCacheKeyIncludesTheEmbedder:
@@ -245,13 +229,9 @@ class TestCacheKeyIncludesTheEmbedder:
         )
 
 
-
-
 # --------------------------------------------------------------------------- #
 # M2 - session memory was unbounded
 # --------------------------------------------------------------------------- #
-
-
 
 
 class TestSessionMemoryIsBounded:
@@ -293,13 +273,9 @@ class TestSessionMemoryIsBounded:
             SessionMemory(max_sessions=0)
 
 
-
-
 # --------------------------------------------------------------------------- #
 # M5 - multi-document answers were misattributed
 # --------------------------------------------------------------------------- #
-
-
 
 
 class TestAnswerAttributionPerDocument:
@@ -372,13 +348,9 @@ class TestAnswerAttributionPerDocument:
         assert answer.count("According to Practo's") == 1
 
 
-
-
 # --------------------------------------------------------------------------- #
 # C4 - the groundedness support corpus was too wide
 # --------------------------------------------------------------------------- #
-
-
 
 
 class TestFixedAnswersAreExemptByIdentity:
@@ -441,13 +413,9 @@ class TestFixedAnswersAreExemptByIdentity:
         assert report.grounded is False
 
 
-
-
 # --------------------------------------------------------------------------- #
 # M4 - the reviewer's critique had no causal effect
 # --------------------------------------------------------------------------- #
-
-
 
 
 class TestTheEditorActsOnTheReviewersFindings:
@@ -531,13 +499,9 @@ class TestTheEditorActsOnTheReviewersFindings:
         assert verdict_from_findings(session, *parsed) == deterministic_verdict(session)
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Contact-number validation (distinct from masking)
 # --------------------------------------------------------------------------- #
-
-
 
 
 class TestContactNumberValidation:
@@ -597,13 +561,9 @@ class TestContactNumberValidation:
         assert "9876543210" not in str(payload)
 
 
-
-
 # --------------------------------------------------------------------------- #
 # Contract names the brief specifies literally
 # --------------------------------------------------------------------------- #
-
-
 
 
 class TestBriefContractNames:
@@ -657,6 +617,5 @@ class TestBriefContractNames:
         controls = " ".join(GOVERNANCE_LAYERS["cache"]["controls"]).lower()
         assert "normalised" in controls
         assert "invalidation" in controls or "invalidate" in controls
-
 
 

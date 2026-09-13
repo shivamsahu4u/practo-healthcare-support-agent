@@ -35,12 +35,8 @@ MARKER_CHUNKING: Final[str] = "AUTO:CHUNKING"
 MARKER_ESCALATION: Final[str] = "AUTO:ESCALATION"
 
 
-
-
 class ReadmeSectionError(RuntimeError):
     """Raised when a marker pair is missing or malformed."""
-
-
 
 
 def _pattern(marker: str) -> re.Pattern[str]:
@@ -48,8 +44,6 @@ def _pattern(marker: str) -> re.Pattern[str]:
         rf"(<!-- {re.escape(marker)} -->)(.*?)(<!-- /{re.escape(marker)} -->)",
         re.DOTALL,
     )
-
-
 
 
 def replace_section(marker: str, body: str, *, path: Path = README_PATH) -> Path:
@@ -79,8 +73,6 @@ def replace_section(marker: str, body: str, *, path: Path = README_PATH) -> Path
     return path
 
 
-
-
 def read_section(marker: str, *, path: Path = README_PATH) -> str:
     """Return the current content of a marked section, for verification."""
     if not path.is_file():
@@ -89,6 +81,5 @@ def read_section(marker: str, *, path: Path = README_PATH) -> str:
     if match is None:
         raise ReadmeSectionError(f"marker pair for {marker!r} not found in {path.name}.")
     return match.group(2).strip()
-
 
 
