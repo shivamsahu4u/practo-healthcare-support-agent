@@ -1,0 +1,53 @@
+# --- Virtual environments -------------------------------------------------
+.venv
+venv/
+env/
+practo-venv/
+../practo-venv/
+
+
+# --- Secrets and local configuration -------------------------------------
+.env
+.env.local
+*.pem
+*.key
+
+
+# --- Python bytecode / build artefacts -----------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+build/
+dist/
+.eggs/
+
+
+# --- Test / tooling caches -----------------------------------------------
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+
+# --- Databases -----------------------------------------------------------
+*.db
+*.sqlite
+*.sqlite3
+
+
+# --- Vector store + generated runtime artefacts ---------------------------
+chroma/
+data/generated/*
+!data/generated/.gitkeep
+
+
+# --- Editor / OS noise ---------------------------------------------------
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+
+

@@ -1,0 +1,46 @@
+{
+    "endpoint": "ws://localhost:8000/ws/chat/sample-session",
+    "note": "Send these frames in order. Frames 1-2 show memory carrying the appointment id forward; frame 3 resets the conversation; frame 4 repeats frame 2's question and correctly fails to resolve it.",
+    "frames": [
+        {
+            "send": {
+                "query": "What is the current status of appointment APT-1007?"
+            },
+            "expect": "SupportResponse with response_type=appointment and appointment.record_id=APT-1007"
+        },
+        {
+            "send": {
+                "query": "And what is its current status?"
+            },
+            "expect": "SupportResponse with appointment.record_id=APT-1007 recovered from session memory, even though this frame names no id"
+        },
+        {
+            "send": {
+                "reset": true
+            },
+            "expect": "WsServerAck with action=reset and detail='conversation history cleared'"
+        },
+        {
+            "send": {
+                "query": "And what is its current status?"
+            },
+            "expect": "SupportResponse with appointment=null, asking for the appointment id - memory was cleared"
+        },
+        {
+            "send": "this frame is deliberately not valid JSON",
+            "expect": "WsServerError with error=malformed_frame; the socket stays open"
+        },
+        {
+            "send": {
+                "query": "   "
+            },
+            "expect": "WsServerError with error=empty_query; the socket stays open"
+        },
+        {
+            "send": {
+                "query": "What discount applies to a follow-up visit within two weeks?"
+            },
+            "expect": "SupportResponse with response_type=policy - proves the socket survived both bad frames"
+        }
+    ]
+}

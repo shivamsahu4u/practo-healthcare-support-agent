@@ -1,0 +1,31 @@
+# ---------------------------------------------------------------------------
+# Alternative baseline for machines where `torch` (and therefore
+# sentence-transformers) cannot be installed - for example a corporate network
+# that blocks huggingface.co, or a Python build with no torch wheel.
+#
+# This set drops sentence-transformers and relies on ChromaDB's OWN bundled
+# ONNX build of all-MiniLM-L6-v2 (identical model weights, onnxruntime instead
+# of torch). Select it with EMBEDDING_BACKEND=chroma_onnx in your .env.
+#
+# This is a documented, explicitly opt-in alternative - NOT a silent fallback,
+# and NOT the graded default. See README.md -> "Embedding backends".
+# ---------------------------------------------------------------------------
+
+fastapi==0.115.6
+starlette==0.41.3
+uvicorn[standard]==0.34.0
+
+pydantic==2.10.4
+python-dotenv==1.0.1
+
+chromadb==0.5.23
+onnxruntime==1.20.1
+
+crewai==0.100.1
+langchain==0.3.14
+langchain-core==0.3.29
+
+autogen-core==0.5.7
+autogen-agentchat==0.5.7
+
+

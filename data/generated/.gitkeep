@@ -1,0 +1,8 @@
+# Runtime output directory. Everything written here is git-ignored:
+#   chroma/                 persistent ChromaDB store (both collections)
+#   calibration.json        measured similarity threshold (scripts/calibrate_threshold.py)
+#   index_state.json        knowledge-base version + index statistics
+#   requests.jsonl          JSON-Lines request log
+# Committed, human-readable reports are written to ../../reports/ instead.
+
+

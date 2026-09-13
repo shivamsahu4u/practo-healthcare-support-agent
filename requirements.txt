@@ -1,0 +1,40 @@
+# ---------------------------------------------------------------------------
+# Declared compatibility baseline - Practo (Healthcare) Domain Support Agent
+#
+# Target interpreter: CPython 3.11 (see .python-version). Also expected to work
+# on 3.12 / 3.13; CrewAI declares requires-python >=3.10,<3.14, so 3.14 is out.
+#
+# These pins were selected as ONE internally consistent set. Install them
+# together, in one `pip install -r requirements.txt`. Do NOT upgrade individual
+# packages afterwards - CrewAI, ChromaDB, LangChain and Autogen all constrain
+# pydantic and each other, and piecemeal upgrades break the set.
+#
+# See README.md -> "Pinned dependency policy" for the no-torch alternative
+# (requirements-no-torch.txt).
+# ---------------------------------------------------------------------------
+
+# --- Web framework / ASGI server -----------------------------------------
+fastapi==0.115.6
+starlette==0.41.3
+uvicorn[standard]==0.34.0
+
+# --- Validation / configuration -------------------------------------------
+pydantic==2.10.4
+python-dotenv==1.0.1
+
+# --- Vector database ------------------------------------------------------
+chromadb==0.5.23
+
+# --- Embeddings (free, local, no API key) ---------------------------------
+sentence-transformers==3.3.1
+
+# --- LLM orchestration ----------------------------------------------------
+crewai==0.100.1
+langchain==0.3.14
+langchain-core==0.3.29
+
+# --- Independent review stage ---------------------------------------------
+autogen-core==0.5.7
+autogen-agentchat==0.5.7
+
+

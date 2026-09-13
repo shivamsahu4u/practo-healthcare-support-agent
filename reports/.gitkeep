@@ -1,0 +1,13 @@
+# Committed report directory.
+#
+# These files are written by the reproduction scripts and are meant to be
+# committed so a grader can read the measured numbers without running anything:
+#
+#   dataset_report.md         python dataset.py
+#   calibration_report.md     python -m scripts.calibrate_threshold
+#   chunking_comparison.md    python -m scripts.compare_chunking
+#   evaluation_report.md      python -m evaluation.run_evaluation
+#   acceptance_report.md      python -m scripts.run_acceptance_checks
+
+
+

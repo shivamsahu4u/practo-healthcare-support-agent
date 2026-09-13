@@ -1,0 +1,29 @@
+[project]
+name = "practo-healthcare-support-agent"
+version = "1.0.0"
+description = "Practo (Healthcare) domain support agent: RAG core, CrewAI crew, Autogen review, FastAPI deployment."
+requires-python = ">=3.11,<3.14"
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+testpaths = ["tests"]
+addopts = "-q --strict-markers"
+asyncio_mode = "auto"
+filterwarnings = [
+    "default",
+    # RunnableWithMessageHistory emits a LangChainDeprecationWarning pointing at
+    # LangGraph's persistence layer. The brief says this is expected and does not
+    # need to be silenced; it is downgraded here only so `-W error` runs stay usable.
+    "default::DeprecationWarning",
+]
+markers = [
+    "requires_crewai: needs the pinned crewai package installed",
+    "requires_autogen: needs the pinned autogen-agentchat package installed",
+    "requires_embeddings: needs real local embedding-model artefacts",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+
