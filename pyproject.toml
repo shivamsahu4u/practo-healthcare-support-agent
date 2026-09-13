@@ -1,7 +1,7 @@
 [project]
 name = "practo-healthcare-support-agent"
 version = "1.0.0"
-description = "Practo (Healthcare) domain support agent: RAG core, CrewAI crew, Autogen review, FastAPI deployment."
+description = "Practo Healthcare(Domain) support agent: RAG core, CrewAI crew, Autogen review, FastAPI deployment."
 requires-python = ">=3.11,<3.14"
 
 [tool.pytest.ini_options]

@@ -1,6 +1,6 @@
 # Track: Practo (Healthcare)
 
-**Final Capstone: Practo Domain Support Agent**
+**Final Capstone: Practo Healthcare Support Agent**
 
 A patient-support agent that answers Practo clinic-policy questions from a
 knowledge base written for this brief, looks up a specific appointment's status

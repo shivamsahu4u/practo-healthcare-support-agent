@@ -1,5 +1,5 @@
 # ---------------------------------------------------------------------------
-# Declared compatibility baseline - Practo (Healthcare) Domain Support Agent
+# Declared compatibility baseline - Practo Healthcare(Domain) Support Agent
 #
 # Target interpreter: CPython 3.11 (see .python-version). Also expected to work
 # on 3.12 / 3.13; CrewAI declares requires-python >=3.10,<3.14, so 3.14 is out.
